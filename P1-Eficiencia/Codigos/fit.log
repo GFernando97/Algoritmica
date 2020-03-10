@@ -1,0 +1,53 @@
+
+
+*******************************************************************************
+Tue Mar 10 03:32:53 2020
+
+
+FIT:    data read from 'datosquicksort.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a* xlog(b+x) + c
+fitted parameters initialized with current variable values
+
+
+
+*******************************************************************************
+Tue Mar 10 03:33:04 2020
+
+
+FIT:    data read from 'datosquicksort.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a* x*log(b+x) + c
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.8680766347e+14   0.00e+00  2.80e+06    1.000000e+00   1.000000e+00   1.000000e+00
+   4 6.3579713534e+00  -1.63e-01  2.80e+02   -1.672446e-07   9.999998e-01   9.999990e-01
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 6.35797
+rel. change during last iteration : -1.63047e-06
+
+degrees of freedom    (FIT_NDF)                        : 22
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.537586
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.288999
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = -1.67245e-07     +/- 5.844e-08    (34.95%)
+b               = 1                +/- 1.054e+11    (1.054e+13%)
+c               = 0.999999         +/- 1.763e+04    (1.763e+06%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b               0.659  1.000 
+c               0.659  1.000  1.000 

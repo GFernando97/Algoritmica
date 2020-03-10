@@ -186,11 +186,15 @@ static void dividir_qs(int T[], int inicial, int final, int & pp)
 
 
 
-int main()
+int main(int argc, char * argv[])
 {
-  int n;
-  cout << "Introduce número de elementos del vector: ";
-  cin >> n;
+ if (argc != 2)
+    {
+      cerr << "Formato " << argv[0] << " <num_elem>" << endl;
+      return -1;
+    }
+
+  int n = atoi(argv[1]);
 
   int * T = new int[n];
   assert(T);
@@ -202,7 +206,15 @@ int main()
       T[i] = random();
     };
 
+  clock_t t_antes = clock();
+
   quicksort(T, n);
+
+  clock_t t_despues = clock();
+
+
+  cout << n << "  " << ((double)(t_despues - t_antes)) / CLOCKS_PER_SEC << endl;
+
 
   delete [] T;
 
