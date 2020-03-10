@@ -51,3 +51,631 @@ correlation matrix of the fit parameters:
 a               1.000 
 b               0.659  1.000 
 c               0.659  1.000  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 17:06:15 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x*x +b*x +c
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 8.4159775597e+15   0.00e+00  1.06e+07    1.000000e+00   1.000000e+00   1.000000e+00
+  11 8.8113527351e-05  -1.35e-05  1.06e-04    2.573453e-09  -1.554173e-06   1.056998e-03
+
+After 11 iterations the fit converged.
+final sum of squares of residuals : 8.81135e-05
+rel. change during last iteration : -1.35135e-10
+
+degrees of freedom    (FIT_NDF)                        : 22
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00200129
+variance of residuals (reduced chisquare) = WSSR/ndf   : 4.00516e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 2.57345e-09      +/- 1.38e-10     (5.363%)
+b               = -1.55417e-06     +/- 9.242e-07    (59.47%)
+c               = 0.001057         +/- 0.001304     (123.3%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.971  1.000 
+c               0.774 -0.884  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 17:27:15 2020
+
+
+FIT:    data read from 'datoshanoi.dat'
+        format = z
+        #datapoints = 26
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x*log(b+x)+c
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 1.2003622525e+05   0.00e+00  4.54e+01    1.000000e+00   1.000000e+00   1.000000e+00
+  25 3.2471595004e+04  -9.71e-01  4.54e-01    8.039216e-01  -7.319194e-01  -4.111253e+01
+
+After 25 iterations the fit converged.
+final sum of squares of residuals : 32471.6
+rel. change during last iteration : -9.70546e-06
+
+degrees of freedom    (FIT_NDF)                        : 23
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 37.574
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1411.81
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.803922         +/- 0.6406       (79.68%)
+b               = -0.731919        +/- 1536         (2.098e+05%)
+c               = -41.1125         +/- 1324         (3221%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b               0.927  1.000 
+c              -0.931 -1.000  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 17:33:39 2020
+
+
+FIT:    data read from 'datosquicksort.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x*log(b+x)+c
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 3.7924063091e+14   0.00e+00  2.25e+06    8.039216e-01  -7.319194e-01  -4.111253e+01
+   9 4.1792464631e-05  -1.69e-07  2.25e-03    1.064399e-08  -7.319194e-01   1.458659e-03
+
+After 9 iterations the fit converged.
+final sum of squares of residuals : 4.17925e-05
+rel. change during last iteration : -1.69259e-12
+
+degrees of freedom    (FIT_NDF)                        : 22
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00137828
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.89966e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 1.0644e-08       +/- 1.479e-10    (1.389%)
+b               = -0.731919        +/- 5.749e+09    (7.855e+11%)
+c               = 0.00145866       +/- 61.2         (4.196e+06%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b               0.648  1.000 
+c              -0.648 -1.000  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 17:41:49 2020
+
+
+FIT:    data read from 'datoshanoi.dat'
+        format = z
+        #datapoints = 26
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.5741221425e+21   0.00e+00  5.50e+09    1.000000e+00   1.000000e+00
+   5 2.2551445034e+01  -1.52e-05  5.50e+04    5.851448e-09   1.000000e+00
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 22.5514
+rel. change during last iteration : -1.51647e-10
+
+degrees of freedom    (FIT_NDF)                        : 24
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.969352
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.939644
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 5.85145e-09      +/- 2.598e-11    (0.4439%)
+b               = 1                +/- 0.2021       (20.21%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.340  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 17:47:08 2020
+
+
+FIT:    data read from 'datosfloyd.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x**3+b*x**2+c*x+d
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c             d            
+   0 9.9979667310e+20   0.00e+00  3.16e+09    1.000000e+00   1.000000e+00   1.000000e+00   1.000000e+00
+  13 9.6793659866e+00  -3.34e-05  3.16e-04    5.482143e-09   1.515407e-07  -5.018594e-04   1.549713e-01
+
+After 13 iterations the fit converged.
+final sum of squares of residuals : 9.67937
+rel. change during last iteration : -3.3433e-10
+
+degrees of freedom    (FIT_NDF)                        : 21
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.678913
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.460922
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 5.48214e-09      +/- 4.65e-10     (8.483%)
+b               = 1.51541e-07      +/- 1.837e-06    (1212%)
+c               = -0.000501859     +/- 0.002077     (413.9%)
+d               = 0.154971         +/- 0.636        (410.4%)
+
+correlation matrix of the fit parameters:
+                a      b      c      d      
+a               1.000 
+b              -0.987  1.000 
+c               0.926 -0.973  1.000 
+d              -0.719  0.795 -0.898  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 19:27:56 2020
+
+
+FIT:    data read from 'datosfloyd.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x*x +b*x +c
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 2.1557092253e+14   0.00e+00  1.69e+06    1.000000e+00   1.000000e+00   1.000000e+00
+  10 7.3732377271e+01  -4.20e-08  1.69e-04    2.153190e-05  -2.317600e-02   5.542821e+00
+
+After 10 iterations the fit converged.
+final sum of squares of residuals : 73.7324
+rel. change during last iteration : -4.19778e-13
+
+degrees of freedom    (FIT_NDF)                        : 22
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.8307
+variance of residuals (reduced chisquare) = WSSR/ndf   : 3.35147
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 2.15319e-05      +/- 7.891e-07    (3.665%)
+b               = -0.023176        +/- 0.002114     (9.12%)
+c               = 5.54282          +/- 1.193        (21.52%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.971  1.000 
+c               0.774 -0.884  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 19:32:24 2020
+
+
+FIT:    data read from 'datosquicksort.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x**3+b*x**2+c*x+d
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c             d            
+   0 2.4386840426e+35   0.00e+00  4.94e+16    1.000000e+00   1.000000e+00   1.000000e+00   1.000000e+00
+  21 4.0154441766e-05  -1.67e-07  4.94e-05   -4.738770e-20   7.564348e-14   1.130033e-07   1.921072e-03
+
+After 21 iterations the fit converged.
+final sum of squares of residuals : 4.01544e-05
+rel. change during last iteration : -1.67118e-12
+
+degrees of freedom    (FIT_NDF)                        : 21
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00138279
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.91212e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = -4.73877e-20     +/- 6.062e-20    (127.9%)
+b               = 7.56435e-14      +/- 5.987e-14    (79.15%)
+c               = 1.13003e-07      +/- 1.692e-08    (14.97%)
+d               = 0.00192107       +/- 0.001295     (67.43%)
+
+correlation matrix of the fit parameters:
+                a      b      c      d      
+a               1.000 
+b              -0.987  1.000 
+c               0.926 -0.973  1.000 
+d              -0.719  0.795 -0.898  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 19:38:37 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:40:07 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+c               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:40:10 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:40:12 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:40:21 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:40:26 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:42:08 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*x**5+b*x**3+c
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 2.5520392933e+38   0.00e+00  1.84e+18    1.000000e+00   1.000000e+00   1.000000e+00
+   4 1.1924114144e+22  -1.24e-02  1.84e+14   -3.014722e-08   1.000000e+00   1.000000e+00
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 1.19241e+22
+rel. change during last iteration : -1.24086e-07
+
+degrees of freedom    (FIT_NDF)                        : 22
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 2.3281e+10
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.42005e+20
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = -3.01472e-08     +/- 7.977e-09    (26.46%)
+b               = 1                +/- 0.2876       (28.76%)
+c               = 1                +/- 7.579e+09    (7.579e+11%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.975  1.000 
+c               0.563 -0.671  1.000 
+
+
+*******************************************************************************
+Tue Mar 10 19:49:25 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:51:03 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+x               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:51:20 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=2**x+b
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:51:59 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*2**x+bx+ c
+fitted parameters initialized with current variable values
+
+
+
+*******************************************************************************
+Tue Mar 10 19:52:14 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*2**x+b*x+ c
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 5 out of 25
+x               = 1              
+z               = 0.003102       
+
+Current set of parameters
+=========================
+a               = 1              
+b               = 1              
+c               = 1              
+
+BREAK: Undefined value during function evaluation
+
+*******************************************************************************
+Tue Mar 10 19:53:08 2020
+
+
+FIT:    data read from 'datosburbuja1.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*log(x+b)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.5409226238e+03   0.00e+00  5.58e+00    1.000000e+00   1.000000e+00
+   3 1.6595930356e-02  -1.48e-01  5.58e-03    4.280618e-03   9.995416e-01
+
+After 3 iterations the fit converged.
+final sum of squares of residuals : 0.0165959
+rel. change during last iteration : -1.47687e-06
+
+degrees of freedom    (FIT_NDF)                        : 23
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.0268619
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.000721562
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.00428062       +/- 0.0008013    (18.72%)
+b               = 0.999542         +/- 1460         (1.461e+05%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.526  1.000 
