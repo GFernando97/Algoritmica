@@ -10,7 +10,7 @@ using namespace std;
 
 //Funcion que devuelve la traspuesta de una matriz dinamica dada
 int **trasponer(int **m, int dim){
-    //Reserva de la matriz traspuesta
+    //Reserva de espacio para la matriz traspuesta
     int **mt = new int*[dim];
     for(int i=0; i<dim; i++ ){
         mt[i] = new int [dim];
@@ -31,7 +31,7 @@ int main(int argc, char ** argv){
     }
     clock_t tantes, tdespues;
     int util = atoi(argv[1]);
-    //Reserva de la matriz dinamica
+    //Reserva de espacio para la matriz dinamica
     int **matriz = new  int*[util];
     for(int i=0; i<util; i++ ){
         matriz[i] = new int [util];
