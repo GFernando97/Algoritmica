@@ -43,6 +43,10 @@ vector<int> fuerzaBruta(vector<int> &V){
 	return Vaux;  
 }
 
+vector<int> divideYVenceras(vector<int> &V){
+	
+}
+
 int main(){
 
 	vector<int> Voriginal;
