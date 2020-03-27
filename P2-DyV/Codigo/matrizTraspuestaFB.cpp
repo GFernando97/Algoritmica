@@ -3,18 +3,25 @@
 
 
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 using namespace std;
 
-int main(){
+int main(int argc, char**argv){
+
+    if(argc !=2){
+        cout << "El programa recibe solo un argumento como paramentro \n";
+        return 1;
+    }
+
     const int TOPE=1000; //Numero de elementos que vamos a reservar para cada dimension de la matriz (la suponemos estatica)
 	int numeros[TOPE][TOPE];
-    int util; //Numero de filas y columnas que queremos para la matriz (Es cuadrada)
-    cin >> util;
+    int util=atoi(argv[1]); //Numero de filas y columnas que queremos para la matriz (Es cuadrada)
+    
 	
-	for(int i=0;i<util;i++){ //Introducir datos a la matriz
+	for(int i=0;i<util;i++){
 		for(int j=0;j<util;j++){
-			cout<<"numeros["<<i<<"]["<<j<<"]: ";
-			cin>>numeros[i][j];
+			numeros[i][j]=random();
 		}
 	}
 	
