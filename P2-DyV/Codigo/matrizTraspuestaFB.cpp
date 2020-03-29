@@ -25,12 +25,21 @@ int **trasponer(int **m, int dim){
 }
 
 int main(int argc, char ** argv){
+
+    int util = atoi(argv[1]);
+
     if(argc != 2){
         cout << "El programa solo recibe un parametro\n";
         return 1;
     }
+
+    if (!(util & (util - 1)) == 0)
+    {
+      cout << "Numero no es potencia de dos. Fin\n"<<endl;
+      return 1;
+    }
+    
     clock_t tantes, tdespues;
-    int util = atoi(argv[1]);
     //Reserva de espacio para la matriz dinamica
     int **matriz = new  int*[util];
     for(int i=0; i<util; i++ ){
@@ -40,9 +49,23 @@ int main(int argc, char ** argv){
     //Rellenamos la matriz con numeros aleatorios
     for(int i=0; i<util; i++){
         for(int j=0; j<util; j++){
-            matriz[i][j]=random();
+            matriz[i][j]=random() % 10;
         }
     }
+
+
+/*  for (int i = 0; i < util; i++)
+  {
+    for (int j = 0; j < util; j++)
+    {
+      cout << matriz[i][j] << " ";
+      if (j == util-1)
+        cout << endl;
+    }
+  }
+  cout << endl << endl;
+*/
+
 
     tantes=clock();
     matriz=trasponer(matriz, util);
@@ -51,6 +74,21 @@ int main(int argc, char ** argv){
     cout << util << "\t" << (double)(tdespues-tantes) / CLOCKS_PER_SEC << endl;
 
     //Liberar memoria de la matriz
+
+
+/* for (int i = 0; i < util; i++)
+  {
+    for (int j = 0; j < util; j++)
+    {
+      cout << matriz[i][j] << " ";
+      if (j == util-1)
+        cout << endl;
+    }
+  }
+  cout << endl << endl;
+*/
+
+
     for (int i = 0; i < util; i++)
         delete [] matriz[i];
 

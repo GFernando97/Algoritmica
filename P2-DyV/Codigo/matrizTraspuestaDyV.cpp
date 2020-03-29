@@ -6,6 +6,16 @@ using namespace std;
 #include <climits>
 #include <cassert>
 
+
+
+
+// VERSION FB
+void matriz_traspuesta_FB()
+{
+
+}
+
+// VERSION DYV
 int matriz_traspuesta_DyV(int ** m, int d) {
 
   int ** m1;
@@ -91,6 +101,24 @@ int matriz_traspuesta_DyV(int ** m, int d) {
   } //else
 }
 
+// FUNCION GENERAL DE LA MATRIZ
+//    De aquí se elige por medio del umbral si utiliza la version fuerza bruta o la version DyV dependiendo de la dimensión.
+int matriz_transpuesta(int ** matriz, int d)
+{
+  int err;
+  //if(d>???)
+  //{
+    //err = matriz_traspuesta_FB(matriz,d);
+  //}
+  //else
+  {
+    err = matriz_traspuesta_DyV(matriz,d);
+  }
+
+  return err;
+}
+
+
 int main(int argc, char **argv) {
 
   int dim, err;
@@ -108,7 +136,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  srandom(time(0));
+  srand(time(0));
 
   // Creación de la matriz
   dim = atoi(argv[1]);
@@ -125,44 +153,44 @@ int main(int argc, char **argv) {
   {
     for (int j = 0; j < dim; j++)
     {
-      matriz[i][j] = random();
+      matriz[i][j] = rand() % 10;
     }
   }
 
   // Muestro la matriz original
-  for (int i = 0; i < dim; i++)
+/*  for (int i = 0; i < dim; i++)
   {
     for (int j = 0; j < dim; j++)
     {
-      cout << matriz[i][j] << "\t";
+      cout << matriz[i][j] << " ";
       if (j == dim-1)
         cout << endl;
     }
   }
-
   cout << endl << endl;
+*/
 
   tantes = clock();
 
-  err = matriz_traspuesta_DyV(matriz, dim);
+  // Llamada a la función de trasponer
+  err = matriz_transpuesta(matriz, dim);
 
   tdespues = clock();
-
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
 
   // Muestro la matriz traspuesta
-  for (int i = 0; i < dim; i++)
+/*  for (int i = 0; i < dim; i++)
   {
     for (int j = 0; j < dim; j++)
     {
-      cout << matriz[i][j] << "\t";
+      cout << matriz[i][j] << " ";
       if (j == dim-1)
         cout << endl;
     }
   }
 
   cout << endl << endl;
-
+*/
   cout << dim << "\t" << tiempo_transcurrido << endl;
 
   //Liberar memoria de la matriz
