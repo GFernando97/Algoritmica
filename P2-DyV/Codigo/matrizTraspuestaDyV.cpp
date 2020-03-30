@@ -6,9 +6,6 @@ using namespace std;
 #include <climits>
 #include <cassert>
 
-
-
-
 // VERSION FB
 void matriz_traspuesta_FB()
 {
@@ -16,96 +13,42 @@ void matriz_traspuesta_FB()
 }
 
 // VERSION DYV
-int matriz_traspuesta_DyV(int ** m, int d) {
+int mtdyv (int **m, int ci, int cf, int fi, int ff) {
 
-  int ** m1;
-  int ** m2;
-  int ** m3;
-  int ** m4;
+  int aux, d;
 
-  int aux = 0;
+  d = cf - ci + 1;
 
-  // El problema mínimo es que sea 2x2
-  if (d == 2)
-  {
-    aux = m[1][0];
+  // Caso base matriz 2x2
+  if (d == 2) {
 
-    m[1][0] = m[0][1];
-    m[0][1] = aux;
-
-    return 0;
+    aux = m[cf][fi];
+    m[cf][fi] = m[ci][ff];
+    m[ci][ff] = aux;
   }
-  else
-  {
-    // Creo cuatro matrices
-    m1 = new int * [d/2];
-    assert(m1);
-    m2 = new int * [d/2];
-    assert(m2);
-    m3 = new int * [d/2];
-    assert(m3);
-    m4 = new int * [d/2];
-    assert(m4);
-    for (int i = 0; i < d/2; i++)
-    {
-      m1[i] = new int[d];
-      assert(m1[i]);
-      m2[i] = new int[d];
-      assert(m2[i]);
-      m3[i] = new int[d];
-      assert(m3[i]);
-      m4[i] = new int[d];
-      assert(m4[i]);
-    }
+  else {
 
-    // Divido la matriz original en esas cuatro matrices
-    for (int i = 0; i < d/2; i++)
-    {
-      for (int j = 0; j < d/2; j++)
-      {
-        // m1 m2
-        // m3 m4
-        m1[i][j] = m[i][j];
-        m2[i][j] = m[i+d/2][j];
-        m3[i][j] = m[i][j+d/2];
-        m4[i][j] = m[i+d/2][j+d/2];
-      }
-    }
+    // Divido la matriz en en cuatro matrices
+    // m1 m2
+    // m3 m4
+    mtdyv(m, ci, ci+d/2-1, fi, fi+d/2-1);
+    mtdyv(m, ci+d/2, cf, fi, fi+d/2-1);
+    mtdyv(m, ci, ci+d/2-1, fi+d/2, ff);
+    mtdyv(m, ci+d/2, cf, fi+d/2, ff);
 
-    // Divide y venceras
-    matriz_traspuesta_DyV(m1, d/2);
-    matriz_traspuesta_DyV(m2, d/2);
-    matriz_traspuesta_DyV(m3, d/2);
-    matriz_traspuesta_DyV(m4, d/2);
-
-    // Recompongo la matriz con su transpuesta
-    for (int i = 0; i < d/2; i++)
-    {
-      for (int j = 0; j < d/2; j++)
-      {
-        // m1 m3
-        // m2 m4
-        m[i][j] = m1[i][j];
-        m[i+d/2][j] = m3[i][j];
-        m[i][j+d/2] = m2[i][j];
-        m[i+d/2][j+d/2] = m4[i][j];
-      }
-    }
-
-    // Liberar espacio de
+    // Inetrcambio posiciones
+    // m1 m3
+    // m2 m4
     for (int i = 0; i < d/2; i++) {
-      delete [] m1[i];
-      delete [] m2[i];
-      delete [] m3[i];
-      delete [] m4[i];
+      for (int j = 0; j < d/2; j++) {
+        aux = m[ci+d/2+i][fi+j];
+        m[ci+d/2+i][fi+j] = m[ci+i][fi+d/2+j];
+        m[ci+i][fi+d/2+j] = aux;
+      }
     }
-    delete [] m1;
-    delete [] m2;
-    delete [] m3;
-    delete [] m4;
-
-    return 0;
   } //else
+
+  return 0;
 }
 
 // FUNCION GENERAL DE LA MATRIZ
@@ -113,18 +56,10 @@ int matriz_traspuesta_DyV(int ** m, int d) {
 int matriz_transpuesta(int ** matriz, int d)
 {
   int err;
-  //if(d>???)
-  //{
-    //err = matriz_traspuesta_FB(matriz,d);
-  //}
-  //else
-  {
-    err = matriz_traspuesta_DyV(matriz,d);
-  }
+
 
   return err;
 }
-
 
 int main(int argc, char **argv) {
 
@@ -164,40 +99,15 @@ int main(int argc, char **argv) {
     }
   }
 
-  // Muestro la matriz original
-/*  for (int i = 0; i < dim; i++)
-  {
-    for (int j = 0; j < dim; j++)
-    {
-      cout << matriz[i][j] << " ";
-      if (j == dim-1)
-        cout << endl;
-    }
-  }
-  cout << endl << endl;
-*/
-
   tantes = clock();
 
   // Llamada a la función de trasponer
-  err = matriz_transpuesta(matriz, dim);
+  err = mtdyv(matriz, 0, dim-1, 0, dim-1);
 
   tdespues = clock();
+
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
 
-  // Muestro la matriz traspuesta
-/*  for (int i = 0; i < dim; i++)
-  {
-    for (int j = 0; j < dim; j++)
-    {
-      cout << matriz[i][j] << " ";
-      if (j == dim-1)
-        cout << endl;
-    }
-  }
-
-  cout << endl << endl;
-*/
   cout << dim << "\t" << tiempo_transcurrido << endl;
 
   //Liberar memoria de la matriz
