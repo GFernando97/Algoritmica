@@ -1,4 +1,4 @@
-//Programa que muestra la matriz traspuesta de una dada por entrada estandar
+//Programa que prueba la funcionalidad de la funcion trasponer(implementada abajo)
 //Este programa se ha compilado con la orden g++ -o matrizTraspuestaFB matrizTraspuestaFB.cpp 
 
 
