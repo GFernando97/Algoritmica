@@ -2,6 +2,8 @@
 #include <vector>
 #include <cstdlib>
 #include <cassert>
+#include <ctime>
+
 
 using namespace std;
 
@@ -177,8 +179,6 @@ vector<int> alternativaPropuesta(vector<int> &V){
   
   vAux.push_back(V[0]);
 
-
-
   for(int i=1; i<V.size(); i++){
     if(V[i] != vAux[k]){
       vAux.push_back(V[i]);
@@ -215,6 +215,8 @@ vector<int> divideyVenceras(vector<int> &V){
 int main(int argc, char * argv[])
 {
   vector<int> Voriginal;
+  clock_t tantes, tdespues;
+  long double tiempo_transcurrido;
 
 // GENERAR VECTOR
 
@@ -239,15 +241,21 @@ int main(int argc, char * argv[])
 
   for (int j=0; j<n; j++) 
   {
-    cout << T[j] << " ";
+//    cout << T[j] << " ";
     Voriginal.push_back(T[j]);
   }
 
 // INICIO CODIGO
   //Generar(Voriginal);
-  vector<int> ordenado = alternativaPropuesta(Voriginal);
+  tantes = clock();
+  vector<int> ordenado = fuerzaBruta(Voriginal);
+  //vector<int> ordenado = divideyVenceras(Voriginal);
+  tdespues = clock();
+  tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
   
-  for(int i= 0; i< ordenado.size(); i++)
-      cout << ordenado[i];
+    cout << n << "\t" << tiempo_transcurrido << endl;
+
+  //for(int i= 0; i< ordenado.size(); i++)
+  //    cout << ordenado[i];
 
 }
