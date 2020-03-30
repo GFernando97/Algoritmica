@@ -23,9 +23,16 @@ int matriz_traspuesta_DyV(int ** m, int d) {
   int ** m3;
   int ** m4;
 
-  // El problema mínimo es que sea 1x1
-  if (d == 1)
+  int aux = 0;
+
+  // El problema mínimo es que sea 2x2
+  if (d == 2)
   {
+    aux = m[1][0];
+
+    m[1][0] = m[0][1];
+    m[0][1] = aux;
+
     return 0;
   }
   else
