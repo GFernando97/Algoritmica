@@ -7,17 +7,7 @@
 
 using namespace std;
 
-void Generar(vector<int> &v){
-    v.push_back(2);
-    v.push_back(3);
-    v.push_back(4);
-    v.push_back(7);
-    v.push_back(2);
-    v.push_back(5);
-    v.push_back(5);
-    v.push_back(3);
-}
-
+//Método auxiliar implementado para generar valores aleatorios para el vector
 double uniforme() 
 {
   int t = rand();
@@ -25,6 +15,10 @@ double uniforme()
   return (double)t/f;
 }
 
+
+//Método pertenenciente al algoritmo divide y vencerás.
+//Se encarga de unir todos los elementos separados una vez que estos
+//se han separado en la primera etapa
 vector<int> joinVector(vector<int> &vIzq, vector<int> &vDer){
     int i = 0;
     int j = 0;
@@ -33,9 +27,13 @@ vector<int> joinVector(vector<int> &vIzq, vector<int> &vDer){
 
     while(!fin){
 
+    	//Primer caso: El elemento analizado del vector derecho sea mayor que el del izquierdo
         if(vIzq[i] < vDer[j]){
+        	//Insertamos el elemento menor en el vector final
             Vfinal.push_back(vIzq[i]);
 
+            //Comprobamos si era el último elemento de este subvector
+            //En caso afirmativo, copiamos los elementos del vector derecho en el vector final y salimos del bucle
             if(i == (vIzq.size()-1)){
                 fin = true;
 
@@ -44,12 +42,18 @@ vector<int> joinVector(vector<int> &vIzq, vector<int> &vDer){
                 }
             }
 
+            //En caso de que no sea el último elemento, incrementamos el indice que se encarga de analizar
+            //los valores del vector Vizq, de esta forma seguimos examinando elementos sin salir del bucle
             else i++;
         }
 
+        //Segundo caso: El elemento analizado del vector derecho es menor que el del izquierdo
         else if(vIzq[i] > vDer[j]){
+        	//En este caso, insertamos en el elemento de vDer en el vector final
             Vfinal.push_back(vDer[j]);
 
+			//Comprobamos si dicho elemento era el último de este subvector
+            //En caso afirmativo, copiamos los elementos del vector izquierdo (vIzq) en el vector final y salimos del bucle
             if(j == (vDer.size()-1)){
                 fin = true;
 
@@ -57,13 +61,19 @@ vector<int> joinVector(vector<int> &vIzq, vector<int> &vDer){
                     Vfinal.push_back(vIzq[h]);
                 }
             }
-
+			//En caso de que no sea el último, incrementamos el indice que se encarga de analizar
+            //los valores del vector vDer.
             else j++;
         }
 
+        //Tercer caso: Ambos elementos analizados son el mismo
         else {
+        	//En este caso, no importa que elemento insertemos en el vector final, pues ambos son el mismo
+        	//pero nos hemos decantado por insertar el de vIzq
             Vfinal.push_back(vIzq[i]);
 
+            //Como en todos los casos anteriores, comprobamos si este era el último elemento del vector para copiar
+            //el otro en el final (copia elementos de vDer en Vfinal si no quedan mas elementos en vIzq)
             if(i == (vIzq.size()-1)){
                 fin = true;
 
@@ -73,7 +83,7 @@ vector<int> joinVector(vector<int> &vIzq, vector<int> &vDer){
             }
 
 
-
+            //Aquí realizamos la misma comprobación anterior, solo que en este caso nos centramos en los elementos de vIzq.
             else if(j == (vDer.size()-1)){
                 fin = true;
 
@@ -82,85 +92,49 @@ vector<int> joinVector(vector<int> &vIzq, vector<int> &vDer){
                 }
             }
 
+            //Si ninguno de los casos anteriores se ha cumplido, incrementamos el valor de los indices de los vectores para 
+            //continuar con el análisis
             else {i++;j++;}
 
         }
 
     }
+
+    //Devolvemos el vector unificado 
     return Vfinal;
 
 }
 
-// A utility function to swap two elements  
-void swap(int* a, int* b)  
-{  
-    int t = *a;  
-    *a = *b;  
-    *b = t;  
-}  
-  
-/* This function takes last element as pivot, places  
-the pivot element at its correct position in sorted  
-array, and places all smaller (smaller than pivot)  
-to left of pivot and all greater elements to right  
-of pivot */
-int partition (vector<int> &arr, int low, int high)  
-{  
-    int pivot = arr[high]; // pivot  
-    int i = (low - 1); // Index of smaller element  
-  
-    for (int j = low; j <= high - 1; j++)  
-    {  
-        // If current element is smaller than the pivot  
-        if (arr[j] < pivot)  
-        {  
-            i++; // increment index of smaller element  
-            swap(&arr[i], &arr[j]);  
-        }  
-    }  
-    swap(&arr[i + 1], &arr[high]);  
-    return (i + 1);  
-}  
-  
-/* The main function that implements QuickSort  
-arr[] --> Array to be sorted,  
-low --> Starting index,  
-high --> Ending index */
-void quickSort(vector<int> &arr, int low, int high)  
-{  
 
-    if (low < high)  
-    {  
-        /* pi is partitioning index, arr[p] is now  
-        at right place */
-        int pi = partition(arr, low, high);  
-  
-        // Separately sort elements before  
-        // partition and after partition  
-        quickSort(arr, low, pi - 1);  
-        quickSort(arr, pi + 1, high);  
-    }  
-}
-
-
+//Método implementado para eliminar elementos repetidos usando el enfoque denominado "Fuerza bruta"
 vector<int> fuerzaBruta(vector<int> &V){
-    vector<int> Vaux;
+  vector<int> Vaux;
   int k=0;
   bool encontrado;
 
 
-    Vaux.push_back(V[0]);
+  //Como vamos a suponer que no importa si el vector está ordenado, añadiremos el primer valor del mismo a uno auxiliar en el 
+  //cual se van a incluir todos los elementos no repetidos
+   Vaux.push_back(V[0]);
   
+  //Realizaremos un bucle para analizar si un elemento que ya hemos incluido en Vaux (vector auxiliar) se encuentra repetido en
+  //vector original
   for(int i = 1; i < V.size(); i++){
     int j =0;
     encontrado = false;
 
+    //El análisis de valores se realiza dentro de este bucle, en caso de que los valores de vAux y V sean iguales en un índice analizado,
+    //salimos de este while y pasamos al siguiente valor del vector original a analizar.
+    //Si no son valores iguales, incrementamos el indice del vector auxiliar para seguir comparando con los demas elementos considerados
+    //como no repetidos
     while(j <= k and !encontrado){
       if(V[i] == Vaux[j])
         encontrado=true;
       else j++;
     }
 
+    //Si hemos terminado la comprobación de todos los elementos no repetidos y no hemos encontrado ninguno igual en dicho vector,
+    //añadimos el elemento analizado a Vaux y pasa a ser considerado como elemento no repetido.
     if(!encontrado){
       k++;
       Vaux.push_back(V[i]);
@@ -168,44 +142,39 @@ vector<int> fuerzaBruta(vector<int> &V){
 
   }
   
+  //devolvemos el vector de elementos no repetidos
   return Vaux;  
 }
 
-vector<int> alternativaPropuesta(vector<int> &V){
-  vector<int> vAux;
-  int k = 0;
-  
-  quickSort(V, 0, V.size()-1);
-  
-  vAux.push_back(V[0]);
 
-  for(int i=1; i<V.size(); i++){
-    if(V[i] != vAux[k]){
-      vAux.push_back(V[i]);
-      k++;
-    }
-  }
-
-  return vAux;
-}
-
+//Método principal del enfoque "divide y vencerás" empleado para el problema de Elementos repetidos
 vector<int> divideyVenceras(vector<int> &V){
+	//Obtenemos el tamaño del vector
     int tam = V.size();
+
+    //Si su tamaño es uno, ya no se puede dividir mas y por tanto, devolvemos el mismo
     if(tam==1)
         return V;
 
 
+    //Si su tamaño es mayor que 1, dividimos el vector en dos, calculando el nuevo tamaño con una division banal
     int mitadPos = tam/2;
     vector<int> vMitadIzq;
     vector<int> vMitadDer;
+    //Ahora, una vez que sabemos el nuevo tamaño que tendrá cada vector dividido, asignamos los valores pertenecientes
+    //a las posiciones que se encuentran dentro del rango del nuevo tamaño.
+    //De esta forma, creamos dos vectores, uno denominado vMitadIzq, que contiene los valores de la mitad izquierda del
+    //vector dividido, y otro denominado vMitadDer, que contiene los valores de la mitad derecha del vector original
     vMitadIzq.assign(V.begin(), V.end()-mitadPos);
     vMitadDer.assign(V.end()-mitadPos, V.end());
 
+    //De forma recursiva, utilizamos el mismo metodo dividide y vencerás para cada nuevo vector divido
     vMitadIzq = divideyVenceras(vMitadIzq);
     vMitadDer = divideyVenceras(vMitadDer);
+    //Una vez que tenemos ambos vectores, los unimos con el metodo joinVector
     V = joinVector(vMitadIzq, vMitadDer);
 
-
+   //Devolvemos el Vector final, que contiene los elementos no repetidos y ordenados
    return V;
 
 }
@@ -218,8 +187,7 @@ int main(int argc, char * argv[])
   clock_t tantes, tdespues;
   long double tiempo_transcurrido;
 
-// GENERAR VECTOR
-
+  //Comprobamos que la entrada de los datos es correcta y obtenemos los parametros deseados
   if (argc != 2)
     {
       cerr << "Formato " << argv[0] << " <num_elem>" << endl;
@@ -232,6 +200,7 @@ int main(int argc, char * argv[])
 
   srand(time(0));
 
+  //Creamos un vector con elementos aleatorios
   for (int j=0; j<n; j++) 
   {
     double u=uniforme();
@@ -239,23 +208,21 @@ int main(int argc, char * argv[])
     T[j]=k;
   }
 
+  //Pasamos dicho vector al Vector original que vamos a analizar
   for (int j=0; j<n; j++) 
   {
-//    cout << T[j] << " ";
     Voriginal.push_back(T[j]);
   }
 
 // INICIO CODIGO
   //Generar(Voriginal);
   tantes = clock();
+  //Realizamos la función principal del programa utilizando el enfoque deseado
   vector<int> ordenado = fuerzaBruta(Voriginal);
   //vector<int> ordenado = divideyVenceras(Voriginal);
   tdespues = clock();
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
   
-    cout << n << "\t" << tiempo_transcurrido << endl;
-
-  //for(int i= 0; i< ordenado.size(); i++)
-  //    cout << ordenado[i];
+  cout << n << "\t" << tiempo_transcurrido << endl;
 
 }
