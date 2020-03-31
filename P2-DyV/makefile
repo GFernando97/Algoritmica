@@ -1,3 +1,10 @@
+#ALGORITMICA
+#	PRACTICA 2
+#	Makefile para automatizar la práctica.
+#		Uso:
+#		- Escribir make para compilar el código, es igual que 'make code'
+#		- 'make datos' obtiene los datos, 'make graficas' obtiene las graficas, 'make ajuste' el ajuste y 'make all' todo lo anterior.
+
 #Nombre de Ejecutables
 EXE=Codigo/matrizTraspuestaDyV Codigo/matrizTraspuestaFB Codigo/ElementosRepetidosDyV Codigo/ElementosRepetidosFB Codigo/ElementosRepetidosDef
 #Codigo/matrizTraspuestaDef
@@ -18,7 +25,19 @@ repetIni=1000
 repetFin=50000
 repetStep=1000
 
-all : $(EXE) $(DAT) $(GRAF)
+#INICIO
+code : $(EXE)
+
+datos : $(DAT)
+
+graficas : $(GRAF)
+
+graficaMatriz: Graficas/matrizTraspuestaFBvsDyV.png 
+
+ajuste : $(GRAFAJ)
+
+all: $(EXE) $(DAT) $(GRAF) $(GRAFAJ)
+
 
 matrizTraspuestaDyV : Codigo/matrizTraspuestaDyV.cpp
 	g++ Codigo/matrizTraspuestaDyV.cpp -o Codigo/matrizTraspuestaDyV
@@ -77,5 +96,13 @@ Graficas/ElementosRepetidosFBvsDyV.png : Datos/ElementosRepetidosDyV.dat Datos/E
 cleanCode :
 	rm $(EXE)
 
+cleanDatos :
+	rm $(DAT)
+
+cleanGraficas :
+	rm $(GRAF)
+
 cleanAll :
 	rm $(EXE) $(DAT) $(GRAF) $(GRAFAJ) fit.log
+
+
