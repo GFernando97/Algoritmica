@@ -40,10 +40,16 @@ all: $(EXE) $(DAT) $(GRAF) $(GRAFAJ)
 
 
 matrizTraspuestaDyV : Codigo/matrizTraspuestaDyV.cpp
-	g++ Codigo/matrizTraspuestaDyV.cpp -o Codigo/matrizTraspuestaDyV
+	g++ -o Codigo/matrizTraspuestaDyV Codigo/matrizTraspuestaDyV.cpp
+
+matrizTraspuestaDyV_O2 : Codigo/matrizTraspuestaDyV.cpp
+	g++ -O2 -o Codigo/matrizTraspuestaDyV_O2 Codigo/matrizTraspuestaDyV.cpp
 
 matrizTraspuestaFB : Codigo/matrizTraspuestaFB.cpp
 	g++ Codigo/matrizTraspuestaFB.cpp -o Codigo/matrizTraspuestaFB
+
+matrizTraspuestaFB_O2 : Codigo/matrizTraspuestaFB.cpp
+	g++ Codigo/matrizTraspuestaFB.cpp -O2 -o Codigo/matrizTraspuestaFB_O2
 
 #matrizTraspuestaDef : Codigo/matrizTraspuestaDef.cpp
 #	g++ Codigo/matrizTraspuestaDef.cpp -o Codigo/matrizTraspuestaDef
@@ -62,8 +68,14 @@ ElementosRepetidosDef : Codigo/ElementosRepetidosDef.cpp
 Datos/matrizTraspuestaDyV.dat : Codigo/matrizTraspuestaDyV
 	bash datosMatrizTranspuesta.sh matrizTraspuestaDyV $(matIni) $(matFin)
 
+Datos/matrizTraspuestaDyV_O2.dat : Codigo/matrizTraspuestaDyV_O2
+	bash datosMatrizTranspuesta.sh matrizTraspuestaDyV_O2 $(matIni) $(matFin)
+
 Datos/matrizTraspuestaFB.dat : Codigo/matrizTraspuestaFB
 	bash datosMatrizTranspuesta.sh matrizTraspuestaFB $(matIni) $(matFin)
+
+Datos/matrizTraspuestaFB_O2.dat : Codigo/matrizTraspuestaFB_O2
+	bash datosMatrizTranspuesta.sh matrizTraspuestaFB_O2 $(matIni) $(matFin)
 
 #matrizTraspuestaDef.dat : matrizTraspuestaDef
 #	bash datosMatrizTranspuesta.sh matrizTraspuestaDef $(matIni) $(matFin)
@@ -88,8 +100,17 @@ Graficas/ElementosRepetidosFBvsDyV.png : Datos/ElementosRepetidosDyV.dat Datos/E
 
 # Graficas Ajuste
 
-#../Graficas/burbujaAjuste.png : Gnuplot/burbujaAjuste.gpi Datos/burbuja.dat
-#	gnuplot Gnuplot/burbujaAjuste.gpi
+Graficas/matrizTraspuestaDyVAjuste.png : Gnuplot/matrizTraspuestaDyVAjuste.gpi  Datos/matrizTraspuestaDyV.dat
+	gnuplot Gnuplot/matrizTraspuestaDyVAjuste.gpi 
+
+Graficas/matrizTraspuestaFBAjuste.png : Gnuplot/matrizTraspuestaFBAjuste.gpi  Datos/matrizTraspuestaFB.dat
+	gnuplot Gnuplot/matrizTraspuestaFBAjuste.gpi 
+
+Graficas/ElementosRepetidosDyVAjuste.png : Gnuplot/ElementosRepetidosDyVAjuste.gpi  Datos/ElementosRepetidosDyV.dat
+	gnuplot Gnuplot/ElementosRepetidosDyVAjuste.gpi 
+
+Graficas/ElementosRepetidosFBAjuste.png : Gnuplot/ElementosRepetidosFBAjuste.gpi  Datos/ElementosRepetidosFB.dat
+	gnuplot Gnuplot/ElementosRepetidosFBAjuste.gpi 
 
 # Cleaners
 
