@@ -6,6 +6,30 @@ using namespace std;
 #include <climits>
 #include <cassert>
 
+
+
+// Umbral determinado haciendo uso del método teórico y el método experimental.
+ static int UMBRAL = 1024;
+
+//  VERSION FB
+//  Funcion que devuelve la traspuesta de una matriz dinamica dada
+//  Esta función realiza la trasposición simplemente colocando el elemento de la posición i,j 
+//  de la matriz original en la j,i de la matriz a devolver
+int **trasponer(int **m, int dim){
+    //Reserva de espacio para la matriz traspuesta
+    int **mt = new int*[dim];
+    for(int i=0; i<dim; i++ ){
+        mt[i] = new int [dim];
+    }
+    //Bucles que trasponen la matriz dada realizando el cambio de posiciones anteriormente citado
+    for(int i=0; i<dim; i++){
+        for(int j=0; j<dim; j++){
+            mt[i][j]=m[j][i];
+        }
+    }
+    return mt;
+}
+
 // VERSION DYV
 // Función que cobierte una matriz en su traspuesta siguiendo el método
 // de Divide y Vencerás dividiendo la matriz en cuatro submatrices de la misma
@@ -25,18 +49,11 @@ int mtdyv (int **m, int ci, int cf, int fi, int ff) {
   // Cálculo de la dimensión de la matriz
   d = cf - ci + 1;
 
-  // Caso base matriz 2x2
-  if (d == 2) {
-
-    // Realizamos el intercambio en el caso de la matriz base:
-    // a b
-    // c d
-    // Cambiamos 'c' por 'b':
-    // a c
-    // b d
-    aux = m[cf][fi];
-    m[cf][fi] = m[ci][ff];
-    m[ci][ff] = aux;
+  // Caso base al alcanzar umbral.
+  if (d <= UMBRAL) {
+    // Se utiliza la versión Fuerza Bruta
+    cout <<"test "<< d << endl;
+    m=trasponer(m,d);
   }
   else {
 
@@ -105,6 +122,18 @@ int main(int argc, char **argv) {
     }
   }
 
+  for (int i = 0; i < dim; i++)
+  {
+    for (int j = 0; j < dim; j++)
+    {
+      cout << matriz[i][j] << " ";
+      if (j == dim-1)
+        cout << endl;
+    }
+  }
+  cout << endl << endl;
+
+
   tantes = clock();
 
   // Llamada a la función para trasponer la matriz de Divide y Vencerás
@@ -116,6 +145,21 @@ int main(int argc, char **argv) {
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
 
   cout << dim << "\t" << tiempo_transcurrido << endl;
+
+  for (int i = 0; i < dim; i++)
+  {
+    for (int j = 0; j < dim; j++)
+    {
+      cout << matriz[i][j] << " ";
+      if (j == dim-1)
+        cout << endl;
+    }
+  }
+  cout << endl << endl;
+
+
+
+
 
   //Liberar memoria de la matriz
   for (int i = 0; i < dim; i++)

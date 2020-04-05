@@ -7,6 +7,9 @@
 
 using namespace std;
 
+// Umbral determinado haciendo uso del método teórico y el método experimental.
+static int UMBRAL = 1310;
+
 //Método auxiliar implementado para generar valores aleatorios para el vector
 double uniforme() 
 {
@@ -152,34 +155,35 @@ vector<int> divideyVenceras(vector<int> &V){
 	//Obtenemos el tamaño del vector
     int tam = V.size();
 
-    //Si su tamaño es uno, ya no se puede dividir mas y por tanto, devolvemos el mismo
-    if(tam==1)
-        return V;
+    //Si su tamaño es menor que el umbral establecido, se utiliza el algoritmo de Fuerza Bruta.
+    if(tam <= UMBRAL)
+    {
+        return fuerzaBruta(V);
+    }
+    else
+    {
+      //Si su tamaño es mayor que 1, dividimos el vector en dos, calculando el nuevo tamaño con una division banal
+      int mitadPos = tam/2;
+      vector<int> vMitadIzq;
+      vector<int> vMitadDer;
+      //Ahora, una vez que sabemos el nuevo tamaño que tendrá cada vector dividido, asignamos los valores pertenecientes
+      //a las posiciones que se encuentran dentro del rango del nuevo tamaño.
+      //De esta forma, creamos dos vectores, uno denominado vMitadIzq, que contiene los valores de la mitad izquierda del
+      //vector dividido, y otro denominado vMitadDer, que contiene los valores de la mitad derecha del vector original
+      vMitadIzq.assign(V.begin(), V.end()-mitadPos);
+      vMitadDer.assign(V.end()-mitadPos, V.end());
 
+      //De forma recursiva, utilizamos el mismo metodo dividide y vencerás para cada nuevo vector divido
+      vMitadIzq = divideyVenceras(vMitadIzq);
+      vMitadDer = divideyVenceras(vMitadDer);
+      //Una vez que tenemos ambos vectores, los unimos con el metodo joinVector
+      V = joinVector(vMitadIzq, vMitadDer);
 
-    //Si su tamaño es mayor que 1, dividimos el vector en dos, calculando el nuevo tamaño con una division banal
-    int mitadPos = tam/2;
-    vector<int> vMitadIzq;
-    vector<int> vMitadDer;
-    //Ahora, una vez que sabemos el nuevo tamaño que tendrá cada vector dividido, asignamos los valores pertenecientes
-    //a las posiciones que se encuentran dentro del rango del nuevo tamaño.
-    //De esta forma, creamos dos vectores, uno denominado vMitadIzq, que contiene los valores de la mitad izquierda del
-    //vector dividido, y otro denominado vMitadDer, que contiene los valores de la mitad derecha del vector original
-    vMitadIzq.assign(V.begin(), V.end()-mitadPos);
-    vMitadDer.assign(V.end()-mitadPos, V.end());
-
-    //De forma recursiva, utilizamos el mismo metodo dividide y vencerás para cada nuevo vector divido
-    vMitadIzq = divideyVenceras(vMitadIzq);
-    vMitadDer = divideyVenceras(vMitadDer);
-    //Una vez que tenemos ambos vectores, los unimos con el metodo joinVector
-    V = joinVector(vMitadIzq, vMitadDer);
-
-   //Devolvemos el Vector final, que contiene los elementos no repetidos y ordenados
-   return V;
+      //Devolvemos el Vector final, que contiene los elementos no repetidos y ordenados
+      return V;
+    }
 
 }
-
-
 
 int main(int argc, char * argv[])
 {
@@ -218,8 +222,11 @@ int main(int argc, char * argv[])
   //Generar(Voriginal);
   tantes = clock();
   //Realizamos la función principal del programa utilizando el enfoque deseado
-  vector<int> ordenado = fuerzaBruta(Voriginal);
+  //vector<int> ordenado = fuerzaBruta(Voriginal);
   //vector<int> ordenado = divideyVenceras(Voriginal);
+
+  vector<int> ordenado = divideyVenceras(Voriginal);
+
   tdespues = clock();
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
   
