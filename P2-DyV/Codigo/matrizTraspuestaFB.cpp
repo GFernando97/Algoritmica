@@ -31,13 +31,14 @@ void trasponer(int **&m, int dim){
 
 int main(int argc, char ** argv){
 
-    int util = atoi(argv[1]);
+    
     
     //Comprobación de argumentos, ya que este programa solo admite un argumento, que será la dimensión de la matriz de entrada
     if(argc != 2){
         cout << "El programa solo recibe un parametro\n";
         return 1;
     }
+    int util = atoi(argv[1]);
 
     if (!(util & (util - 1)) == 0)
     {
