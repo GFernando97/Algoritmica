@@ -14,7 +14,7 @@ Esta función realiza la trasposición simplemente colocando el elemento de la p
 de la matriz original en la j,i de la matriz a devolver
 
 */
-int **trasponer(int **m, int dim){
+void trasponer(int **&m, int dim){
     //Reserva de espacio para la matriz traspuesta
     int **mt = new int*[dim];
     for(int i=0; i<dim; i++ ){
@@ -26,7 +26,7 @@ int **trasponer(int **m, int dim){
             mt[i][j]=m[j][i];
         }
     }
-    return mt;
+    m = mt;
 }
 
 int main(int argc, char ** argv){
@@ -44,7 +44,6 @@ int main(int argc, char ** argv){
       cout << "Numero no es potencia de dos. Fin\n"<<endl;
       return 1;
     }
-    int **traspuesta; // Declaracion del puntero a punteros que contendrá la traspuesta
     clock_t tantes, tdespues;
     //Reserva de espacio para la matriz dinamica
     int **matriz = new  int*[util];
@@ -74,7 +73,7 @@ int main(int argc, char ** argv){
 
     //Medir el tiempo quee tarda en ejecutarse el método 
     tantes=clock();
-    traspuesta=trasponer(matriz, util);
+    trasponer(matriz, util);
     tdespues=clock();
     
     //Mostrar el resultado, con la dimensión 
@@ -100,8 +99,5 @@ int main(int argc, char ** argv){
 
     delete [] matriz;
     
-    for (int i = 0; i < util; i++)
-        delete [] traspuesta[i];
-
-    delete [] traspuesta;
+    
 }
