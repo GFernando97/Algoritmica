@@ -42,7 +42,7 @@ void trasponer(int ** &m, int dim){
 // cf : índice de la columna final de la matriz  a trasponer (en el caso inicial normalmente será la dimensión de la matriz menos uno)
 // fi : índice de la fila inicial de la matriz a trasponer (en el caso inicial normalmente será 0)
 // ff : índice de la fila final de la matriz a trasponer (en el caso inicial normalmente será la dimensión de la matriz menos uno)
-int mtdyv (int **m, int ci, int cf, int fi, int ff) {
+int mtdyv (int **&m, int ci, int cf, int fi, int ff) {
 
   int aux, d;
 
