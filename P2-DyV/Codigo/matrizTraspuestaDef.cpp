@@ -12,11 +12,11 @@ using namespace std;
  static int UMBRAL = 1024;
 
 //  VERSION FB
-//  Funcion que devuelve la traspuesta de una matriz dinamica dada
+//  Funcion que traspone una matriz dinamica dada
 //  Esta función realiza la trasposición simplemente colocando el elemento de la posición i,j 
-//  de la matriz original en la j,i de la matriz a devolver
+//  de la matriz original en la j,i de la matriz auxiliar, que finalmente igualaremos a la originar para modificarla.
 void trasponer(int ** &m, int dim){
-    //Reserva de espacio para la matriz traspuesta
+    //Reserva de espacio para la matriz auxiliar
     int **mt = new int*[dim];
     for(int i=0; i<dim; i++ ){
         mt[i] = new int [dim];
