@@ -15,7 +15,7 @@ using namespace std;
 //  Funcion que devuelve la traspuesta de una matriz dinamica dada
 //  Esta función realiza la trasposición simplemente colocando el elemento de la posición i,j 
 //  de la matriz original en la j,i de la matriz a devolver
-int **trasponer(int **m, int dim){
+void trasponer(int ** &m, int dim){
     //Reserva de espacio para la matriz traspuesta
     int **mt = new int*[dim];
     for(int i=0; i<dim; i++ ){
@@ -27,7 +27,7 @@ int **trasponer(int **m, int dim){
             mt[i][j]=m[j][i];
         }
     }
-    return mt;
+    m=mt;
 }
 
 // VERSION DYV
@@ -53,7 +53,7 @@ int mtdyv (int **m, int ci, int cf, int fi, int ff) {
   if (d <= UMBRAL) {
     // Se utiliza la versión Fuerza Bruta
     cout <<"test "<< d << endl;
-    m=trasponer(m,d);
+    trasponer(m,d);
   }
   else {
 
