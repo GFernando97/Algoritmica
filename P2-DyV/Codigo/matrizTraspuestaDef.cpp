@@ -9,25 +9,52 @@ using namespace std;
 
 
 // Umbral determinado haciendo uso del método teórico y el método experimental.
- static int UMBRAL = 1024;
+ static int UMBRAL = 8;
 
 //  VERSION FB
 //  Funcion que traspone una matriz dinamica dada
 //  Esta función realiza la trasposición simplemente colocando el elemento de la posición i,j 
 //  de la matriz original en la j,i de la matriz auxiliar, que finalmente igualaremos a la originar para modificarla.
-void trasponer(int ** &m, int dim){
+void trasponer(int ** &m, int ci, int cf, int fi, int ff){
+      int d = cf - ci + 1;
     //Reserva de espacio para la matriz auxiliar
-    int **mt = new int*[dim];
-    for(int i=0; i<dim; i++ ){
-        mt[i] = new int [dim];
+    int **mt = new int*[d];
+    int **m2 = new int*[d];
+    for(int i=0; i<d; i++ ){
+        mt[i] = new int [d];
+        m2[i] = new int [d];
     }
+
+     for(int i=0; i<d; i++){
+        for(int j=0; j<d; j++){
+            mt[i][j] = m[ci+i][fi+j];
+        }
+       }
+
     //Bucles que trasponen la matriz dada realizando el cambio de posiciones anteriormente citado
-    for(int i=0; i<dim; i++){
-        for(int j=0; j<dim; j++){
-            mt[i][j]=m[j][i];
+    for(int i=0; i<d; i++)
+    {
+      for(int j=0; j<d; j++)
+      {
+          m2[i][j]=mt[j][i];
+      }
+    }
+
+    for(int i=0; i<d; i++)
+    {
+      for(int j=0; j<d; j++)
+        {
+          m[ci+i][fi+j]=m2[i][j];
         }
     }
-    m=mt;
+
+  for (int i = 0; i < d; i++)
+  {
+    delete [] mt[i];
+    delete [] m2[i];
+  }
+  delete [] mt;
+  delete [] m2;
 }
 
 // VERSION DYV
@@ -48,12 +75,12 @@ int mtdyv (int **&m, int ci, int cf, int fi, int ff) {
 
   // Cálculo de la dimensión de la matriz
   d = cf - ci + 1;
-
+  //cout <<"dim="<<d<<endl;
   // Caso base al alcanzar umbral.
-  if (d <= UMBRAL) {
+  if (d <= UMBRAL ) {
     // Se utiliza la versión Fuerza Bruta
-    cout <<"test "<< d << endl;
-    trasponer(m,d);
+
+    trasponer(m, ci, cf, fi, ff);
   }
   else {
 
@@ -62,16 +89,14 @@ int mtdyv (int **&m, int ci, int cf, int fi, int ff) {
     // m3 m4
     // m1
     mtdyv(m, ci, ci+d/2-1, fi, fi+d/2-1);
-    // m2
     mtdyv(m, ci+d/2, cf, fi, fi+d/2-1);
-    // m3
     mtdyv(m, ci, ci+d/2-1, fi+d/2, ff);
-    // m4
     mtdyv(m, ci+d/2, cf, fi+d/2, ff);
 
     // Inetrcambio posiciones
     // m1 m3
     // m2 m4
+    
     for (int i = 0; i < d/2; i++) {
       for (int j = 0; j < d/2; j++) {
         aux = m[ci+d/2+i][fi+j];
@@ -79,7 +104,10 @@ int mtdyv (int **&m, int ci, int cf, int fi, int ff) {
         m[ci+i][fi+d/2+j] = aux;
       }
     }
-  } //else
+
+
+  } 
+  //else
 
   return 0;
 }
@@ -112,13 +140,12 @@ int main(int argc, char **argv) {
     matriz[i] = new int[dim];
     assert(matriz[i]);
   }
-
   // Rellenar matriz de elementos aleatorios
   for (int i = 0; i < dim; i++)
   {
     for (int j = 0; j < dim; j++)
     {
-      matriz[i][j] = rand() % 10;
+      matriz[i][j] = rand()%10;
     }
   }
 

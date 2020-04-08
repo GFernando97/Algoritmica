@@ -8,7 +8,7 @@
 using namespace std;
 
 // Umbral determinado haciendo uso del método teórico y el método experimental.
-static int UMBRAL = 1310;
+static int UMBRAL = 2;
 
 //Método auxiliar implementado para generar valores aleatorios para el vector
 double uniforme() 
@@ -144,6 +144,17 @@ vector<int> fuerzaBruta(vector<int> &V){
     }
 
   }
+
+  int i, j;
+  int aux;
+  for (i = 0; i < Vaux.size() - 1; i++)
+    for (j = Vaux.size() - 1; j > i; j--)
+      if (Vaux[j] < Vaux[j-1])
+	{
+	  aux = Vaux[j];
+	  Vaux[j] = Vaux[j-1];
+	  Vaux[j-1] = aux;
+	}
   
   //devolvemos el vector de elementos no repetidos
   return Vaux;  
@@ -178,7 +189,6 @@ vector<int> divideyVenceras(vector<int> &V){
       vMitadDer = divideyVenceras(vMitadDer);
       //Una vez que tenemos ambos vectores, los unimos con el metodo joinVector
       V = joinVector(vMitadIzq, vMitadDer);
-
       //Devolvemos el Vector final, que contiene los elementos no repetidos y ordenados
       return V;
     }
@@ -225,11 +235,22 @@ int main(int argc, char * argv[])
   //vector<int> ordenado = fuerzaBruta(Voriginal);
   //vector<int> ordenado = divideyVenceras(Voriginal);
 
+  for (int j=0; j<n; j++) 
+  {
+    cout<<Voriginal[j]<<" ";
+  }
+  cout << endl;
+
   vector<int> ordenado = divideyVenceras(Voriginal);
 
   tdespues = clock();
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
   
+    for (int j=0; j<ordenado.size(); j++) 
+  {
+    cout<<ordenado[j]<<" ";
+  }
+  cout << endl;
   cout << n << "\t" << tiempo_transcurrido << endl;
 
 }

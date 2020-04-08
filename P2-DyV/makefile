@@ -48,6 +48,9 @@ Codigo/matrizTraspuestaDyV_O2 : Codigo/matrizTraspuestaDyV.cpp
 Codigo/matrizTraspuestaFB : Codigo/matrizTraspuestaFB.cpp
 	g++ Codigo/matrizTraspuestaFB.cpp -o Codigo/matrizTraspuestaFB
 
+Codigo/matrizTraspuestaDef : Codigo/matrizTraspuestaDef.cpp
+	g++ Codigo/matrizTraspuestaDef.cpp -o Codigo/matrizTraspuestaDef
+
 Codigo/matrizTraspuestaFB_O2 : Codigo/matrizTraspuestaFB.cpp
 	g++ Codigo/matrizTraspuestaFB.cpp -O2 -o Codigo/matrizTraspuestaFB_O2
 
@@ -84,6 +87,8 @@ Datos/ElementosRepetidosDyV.dat : Codigo/ElementosRepetidosDyV
 Datos/ElementosRepetidosFB.dat : Codigo/ElementosRepetidosFB
 	taskset --cpu-list 0 bash datosElementosRepetidos.sh ElementosRepetidosFB $(repetIni) $(repetFin) $(repetStep)
 
+Datos/ElementosRepetidosDef.dat : Codigo/ElementosRepetidosDef
+	taskset --cpu-list 0 bash datosElementosRepetidos.sh ElementosRepetidosDef $(repetIni) $(repetFin) $(repetStep)
 
 
 # Graficas
@@ -91,11 +96,17 @@ Datos/ElementosRepetidosFB.dat : Codigo/ElementosRepetidosFB
 Graficas/matrizTraspuestaFBvsDyV.png : Datos/matrizTraspuestaDyV.dat Datos/matrizTraspuestaFB.dat
 	gnuplot Gnuplot/matrizTraspuestaFBvsDyV.gpi
 
+
+
+
 Graficas/matrizTraspuestaFBvsDyV_O2.png : Datos/matrizTraspuestaDyV_O2.dat Datos/matrizTraspuestaFB_O2.dat
 	gnuplot Gnuplot/matrizTraspuestaFBvsDyV_O2.gpi
 
 Graficas/ElementosRepetidosFBvsDyV.png : Datos/ElementosRepetidosDyV.dat Datos/ElementosRepetidosFB.dat
 	gnuplot Gnuplot/ElementosRepetidosFBvsDyV.gpi
+
+Graficas/ElementosRepetidosDef.png : Datos/ElementosRepetidosDef.dat Datos/ElementosRepetidosFB.dat
+	gnuplot Gnuplot/ElementosRepetidosDef.gpi
 
 # Graficas Ajuste
 
