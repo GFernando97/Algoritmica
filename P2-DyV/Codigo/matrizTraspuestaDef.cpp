@@ -9,7 +9,7 @@ using namespace std;
 
 
 // Umbral determinado haciendo uso del método teórico y el método experimental.
- static int UMBRAL = 8;
+ static int UMBRAL = 1024;
 
 //  VERSION FB
 //  Funcion que traspone una matriz dinamica dada
@@ -17,14 +17,14 @@ using namespace std;
 //  de la matriz original en la j,i de la matriz auxiliar, que finalmente igualaremos a la originar para modificarla.
 void trasponer(int ** &m, int ci, int cf, int fi, int ff){
       int d = cf - ci + 1;
-    //Reserva de espacio para la matriz auxiliar
+    //Reserva de espacio para las matrices auxiliares
     int **mt = new int*[d];
     int **m2 = new int*[d];
     for(int i=0; i<d; i++ ){
         mt[i] = new int [d];
         m2[i] = new int [d];
     }
-
+      // Se copia la submatriz a la matriz auxiliar 1
      for(int i=0; i<d; i++){
         for(int j=0; j<d; j++){
             mt[i][j] = m[ci+i][fi+j];
@@ -39,7 +39,7 @@ void trasponer(int ** &m, int ci, int cf, int fi, int ff){
           m2[i][j]=mt[j][i];
       }
     }
-
+    // De la matriz auxiliar 2 se reemplazan valores en la submatriz original.
     for(int i=0; i<d; i++)
     {
       for(int j=0; j<d; j++)
@@ -47,7 +47,7 @@ void trasponer(int ** &m, int ci, int cf, int fi, int ff){
           m[ci+i][fi+j]=m2[i][j];
         }
     }
-
+    // Se liberan de memoria las submatrices.
   for (int i = 0; i < d; i++)
   {
     delete [] mt[i];

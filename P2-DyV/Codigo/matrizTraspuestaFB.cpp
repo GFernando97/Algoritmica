@@ -40,11 +40,6 @@ int main(int argc, char ** argv){
     }
     int util = atoi(argv[1]);
 
-    if (!(util & (util - 1)) == 0)
-    {
-      cout << "Numero no es potencia de dos. Fin\n"<<endl;
-      return 1;
-    }
     clock_t tantes, tdespues;
     //Reserva de espacio para la matriz dinamica
     int **matriz = new  int*[util];

@@ -8,7 +8,7 @@
 using namespace std;
 
 // Umbral determinado haciendo uso del método teórico y el método experimental.
-static int UMBRAL = 2;
+static int UMBRAL = 1310;
 
 //Método auxiliar implementado para generar valores aleatorios para el vector
 double uniforme() 
@@ -145,6 +145,7 @@ vector<int> fuerzaBruta(vector<int> &V){
 
   }
 
+  // Para que funcione debidamente el código FB acoplado al DyV, se debe ordenar el vector saliente.
   int i, j;
   int aux;
   for (i = 0; i < Vaux.size() - 1; i++)
@@ -235,22 +236,22 @@ int main(int argc, char * argv[])
   //vector<int> ordenado = fuerzaBruta(Voriginal);
   //vector<int> ordenado = divideyVenceras(Voriginal);
 
-  for (int j=0; j<n; j++) 
+/*  for (int j=0; j<n; j++) 
   {
     cout<<Voriginal[j]<<" ";
   }
   cout << endl;
-
+*/
   vector<int> ordenado = divideyVenceras(Voriginal);
 
   tdespues = clock();
   tiempo_transcurrido = (double)(tdespues-tantes) / CLOCKS_PER_SEC;
-  
+/*  
     for (int j=0; j<ordenado.size(); j++) 
   {
     cout<<ordenado[j]<<" ";
   }
-  cout << endl;
+  cout << endl;*/
   cout << n << "\t" << tiempo_transcurrido << endl;
 
 }
