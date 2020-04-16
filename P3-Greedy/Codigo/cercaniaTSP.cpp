@@ -1,6 +1,6 @@
 /*ES:   Asignatura: Algoritmica
         Practica 3 - Greedy
-        TSP con método de Inserción
+        TSP con método de Cercanía
         Autor: Valentino Lugli */ 
 
 //  LIBRERIAS
