@@ -20,6 +20,10 @@
 
 using namespace std;
 
+int calcularDistancia(float x2, float x1, float y2, float y1)
+{
+    return (int)(round ( sqrt( pow(x2 - x1, 2) + pow(y2 - y1, 2) ) ) );
+}
 
 int main(int argc, char * argv[])
 {
@@ -30,7 +34,7 @@ int main(int argc, char * argv[])
       return -1;
     }
 
-    float **matrizTSP,**matrizOPT;
+    float **matrizTSP,**matrizOPT,**matrizNXY;
     int dim;
     string lineaTSP = "";
 	string lineaOPT = "";
@@ -60,11 +64,13 @@ int main(int argc, char * argv[])
 
         matrizTSP = new float*[dim];
         matrizOPT = new float*[dim];
+        matrizNXY = new float*[dim];
         float a,b,c,d;
         for(int i=0; i<dim; i++)
         {
             archivoTSP >> a >> b >> c;
 			archivoOPT >> d;
+
             matrizTSP[i] = new float[3];
             matrizTSP[i][0] =a;
             matrizTSP[i][1] =b;
@@ -72,6 +78,8 @@ int main(int argc, char * argv[])
             
             matrizOPT[i] = new float[1];
             matrizOPT[i][0] = d; 
+
+            matrizNXY[i] = new float[3];
        //     cout << matrizTSP[i][0] << " "<<matrizTSP[i][1]<<" "<<matrizTSP[i][2]<<" "<<matrizOPT[i][0]<<endl;
         }
         archivoTSP.close();
@@ -80,6 +88,7 @@ int main(int argc, char * argv[])
     else cout << "No se puede abrir el archivo."; 
 
 	float target;
+    int camino = 0;
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -88,19 +97,38 @@ int main(int argc, char * argv[])
 		{
 			if (target == matrizTSP[j][0])
 			{
-				cout << matrizTSP[j][0] <<" "<<matrizTSP[j][1]<<" "<<matrizTSP[j][2]<<endl;
+				matrizNXY[i][0] = matrizTSP[j][0];
+                matrizNXY[i][1] = matrizTSP[j][1];
+                matrizNXY[i][2] = matrizTSP[j][2];
 			}
 		}
 	}
-	cout << matrizTSP[0][0] <<" "<<matrizTSP[0][1]<<" "<<matrizTSP[0][2]<<endl;
+
+    for (int i = 0; i < dim-1; i++)
+    {
+        camino += calcularDistancia(matrizNXY[i+1][1], matrizNXY[i][1], matrizNXY[i+1][2], matrizNXY[i][2]);
+    }
+    camino += calcularDistancia(matrizNXY[0][1], matrizNXY[dim-1][1], matrizNXY[0][2], matrizNXY[dim-1][2]);
+
+    cout <<"CAMINO OPTIMO: "<<camino<<endl
+         <<"INICIO_CAMINO_OPTIMO"<<endl;
+
+    for (int i = 0; i < dim; i++)
+    {
+        cout << matrizNXY[i][0] << "\t" << matrizNXY[i][1] << "\t" << matrizNXY[i][2] << endl;
+    }
+    
+	cout << matrizTSP[0][0] <<"\t"<<matrizTSP[0][1]<<"\t"<<matrizTSP[0][2]<<endl;
 
 // Eliminar la matriz.
  for (int i = 0; i < dim; i++)
  {
     delete [] matrizTSP[i];
     delete [] matrizOPT[i];
+    delete [] matrizNXY[i];
  }
 
   delete [] matrizTSP;
   delete [] matrizOPT;
+  delete [] matrizNXY;
 }
