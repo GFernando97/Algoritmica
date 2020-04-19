@@ -1,3 +1,6 @@
+//Ejecucion ./ejecutable NumeroTareasDeseadas
+
+
 #include <iostream>
 #include <queue>
 #include <ctime>
