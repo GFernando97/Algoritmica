@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
 #include <fstream>
 #include <cmath>
 
@@ -248,7 +247,6 @@ GrafoTSP greedy(GrafoTSP g){
 
     //Mientras S no sea solucion(hasta que el grafo no tenga el tamaño esperado) y C != 0 (la lista de candidatos quede vacia) ...
     while(optimo.size() < size_final && g.size() > 0){
-        g.mostrar();
         g.eliminar(aux.second);
         aux = optimo.seleccionar(g);
         optimo.insertar(aux.second, aux.first);
@@ -296,8 +294,13 @@ int main(int argc, char **argv){
 
         h = greedy(g);
 
+        cout << "Grafo inicial\n";
+
         g.mostrar();
         cout << endl << endl << endl << endl << endl;
+        
+        cout << "Recorrido greedy por insercion\n";
+
         h.mostrar();
            
             
