@@ -1,15 +1,261 @@
-//Uso ./<nombre_ejecutable> <arhchivo.tsp>
+ //Uso ./<nombre_ejecutable> <arhchivo.tsp>
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
-struct nodo{
-    float node, coord, section;
+class nodo{
+    private:
+        int node;
+        float coord, section;
+    public:
+        int getNode(){return node;}
+        float getCoord(){return coord;}
+        float getSection(){return section;}
+        void setNode(int n){node = n;}
+        void setCoord(float n){coord=n;}
+        void setSection(float n){section=n;}
+        float distancia(nodo n2){
+            float dif1 = n2.getCoord() - getCoord(), dif2 = n2.getSection() - getSection();
+            return sqrt(dif1*dif1+dif2*dif2);
+        }   
+        bool operator==(const nodo & n){
+            bool iguales = false;
+            if(n.coord == coord && n.node == node && n.section == section)
+                iguales = true;
+            return iguales;
+        }
 };
 
+class GrafoTSP{
+    private:
+        vector<nodo> v;
+    public:
+        GrafoTSP(){}
+
+        void reservar(int a){ v.resize(a);}
+
+        int size(){return v.size();}
+
+        nodo detectarNodo(int a){
+            nodo n;
+            bool encontrado = false;
+            for(vector<nodo>::iterator i=v.begin(); i != v.end() && !encontrado; ++i){
+                if (a == (*i).getNode()){
+                    encontrado = true;
+                    n = *i;
+                }
+            }
+            return n;
+        }
+
+        void eliminar(nodo n){
+            bool eliminado=false;
+            for(vector<nodo>::iterator i=v.begin(); i!= v.end() && !eliminado; ++i){
+                if(n.getNode() == i->getNode()){
+                    v.erase(i);
+                    eliminado=true;
+                }
+            }
+        }
+        //Insertar nodo n, delante del nodo n1
+        void insertar(nodo n, nodo n1){
+            bool insertado = false;
+            for(vector<nodo>::iterator i=v.begin(); i!=v.end() && !insertado; ++i){
+                if(n1==(*i)){
+                    v.insert(i, n);
+                    insertado = true;
+                }
+            }
+        }
+
+        //Menor distancia desde el nodo n, hasta el nodo "menor" 
+        void menorDistancia(nodo &n, float &dist_menor, nodo &menor){
+            bool primera = true;
+            for(vector<nodo>::iterator i=v.begin(); i != v.end(); ++i){
+                if(primera){
+                    dist_menor = n.distancia(*i);
+                    menor = *i;
+                    primera = false;       
+                }
+                else{
+                    if(dist_menor >= n.distancia(*i) && !(menor == *i)){
+                        dist_menor = n.distancia(*i);
+                        menor = *i;
+                    }
+                }
+            }
+        }
+
+        nodo masAlOeste(){
+            nodo oeste;
+            float coord_menor;
+            bool primera = true;
+            for(vector<nodo>::iterator i=v.begin(); i != v.end(); ++i){
+                if(primera){
+                    coord_menor = i->getCoord();
+                    oeste = *i;
+                    primera = false;     
+                }
+                else{
+                    if(coord_menor >= i->getCoord()){
+                        coord_menor = i->getCoord();
+                        oeste = *i;
+                    }
+                }
+            }
+            return oeste;
+        }
+        nodo masAlEste(){
+            nodo este;
+            float coord_mayor;
+            bool primera = true;
+            for(vector<nodo>::iterator i=v.begin(); i != v.end(); ++i){
+                if(primera){
+                    coord_mayor = i->getCoord();
+                    este = *i;
+                    primera = false;     
+                }
+                else{
+                    if(coord_mayor <= i->getCoord()){
+                        coord_mayor = i->getCoord();
+                        este = *i;
+                    }
+                }
+            }
+            return este;
+        }
+        nodo masAlNorte(){
+            nodo norte;
+            float section_mayor;
+            bool primera = true;
+            for(vector<nodo>::iterator i=v.begin(); i != v.end(); ++i){
+                if(primera){
+                    section_mayor = i->getSection();
+                    norte = *i;
+                    primera = false;     
+                }
+                else{
+                    if(section_mayor <= i->getSection()){
+                        section_mayor = i->getSection();
+                        norte = *i;
+                    }
+                }
+            }
+            return norte;
+        }    
+ 
+        GrafoTSP recorridoParcial(){
+            GrafoTSP res;
+            res.v.push_back(masAlNorte());
+            res.v.push_back(masAlEste());
+            res.v.push_back(masAlOeste());
+            return res;
+        }
+
+        void mostrar(){
+            for (GrafoTSP::iterator i=begin(); i!=end(); ++i){
+                cout << (*i).getNode()<< " " << (*i).getCoord() << " " << (*i).getSection() << endl; 
+            }
+        }
+
+        class iterator{
+            private:
+                vector<nodo>:: iterator it;
+            public:
+                iterator(){}
+                bool operator==(const iterator &i){return i.it==it;}
+                bool operator!=(const iterator &i){return i.it!=it;}
+                nodo & operator * (){return *it;}
+                iterator &operator ++(){++it; return *this;}
+                iterator &operator --(){--it; return *this;}
+                friend class GrafoTSP;
+        };
+        iterator begin(){
+            iterator i;
+            i.it = v.begin();
+            return i;
+        }
+        iterator end(){
+            iterator i;
+            i.it = v.end();
+            return i;
+        }
+        class const_iterator{
+            private:
+                vector<nodo>:: const_iterator it;
+            public:
+                const_iterator(){}
+                bool operator==(const const_iterator &i){return i.it==it;}
+                bool operator!=(const const_iterator &i){return i.it!=it;}
+                const nodo & operator * (){return *it;}
+                const_iterator &operator ++(){++it; return *this;}
+                const_iterator &operator --(){--it; return *this;}
+                friend class GrafoTSP;
+        };
+        const_iterator cbegin(){
+            const_iterator i;
+            i.it = v.cbegin();
+            return i;
+        }
+        const_iterator cend(){
+            const_iterator i;
+            i.it = v.cend();
+            return i;
+        }        
+        pair<nodo,nodo> seleccionar(GrafoTSP g){
+            pair<nodo, nodo> res;
+            nodo n, menor;
+            float dist=INFINITY;
+            bool primera=false;
+            for(GrafoTSP::iterator i=begin(); i!=end(); ++i){
+                for(GrafoTSP::iterator j=g.begin(); j!=g.end(); ++j){
+                    if(dist >= (*i).distancia(*j)){
+                        n= *i;
+                        menor=*j;
+                        dist= n.distancia(menor);  
+                    }
+                        
+                }
+            }
+            res.first = n;
+            res.second = menor;
+            return res;
+        }
+        void insertafinal(nodo n){
+            v.insert(v.end(), n);
+        }
+};
+
+GrafoTSP greedy(GrafoTSP g){
+    //El grafo de la solucion es vacio inicialmente (optimo).
+    //La copia de "g" que le pasamos a la funcion sera nuestro conjunto de candidatos
+    GrafoTSP optimo; 
+    int size_final = g.size();
+    pair<nodo,nodo> aux;
+
+    //Añado a optimo los nodos que constituyen el recorrido parcial
+    optimo = g.recorridoParcial();
+
+    //Los eliminamos de la lista de candidatos los elementos insertados inicialmente
+    g.eliminar(g.masAlEste());
+    g.eliminar(g.masAlOeste());   
+    g.eliminar(g.masAlNorte()); 
+
+    //Mientras S no sea solucion(hasta que el grafo no tenga el tamaño esperado) y C != 0 (la lista de candidatos quede vacia) ...
+    while(optimo.size() < size_final && g.size() > 0){
+        g.mostrar();
+        g.eliminar(aux.second);
+        aux = optimo.seleccionar(g);
+        optimo.insertar(aux.second, aux.first);
+    }
+    optimo.insertafinal(*(optimo.begin()));
+    return optimo;
+}
 
 int main(int argc, char **argv){
     if(argc != 2){
@@ -17,7 +263,7 @@ int main(int argc, char **argv){
         return -1;
     }
     string linea="";
-    vector<nodo> v;
+    GrafoTSP g, h;
     ifstream f(argv[1]);
     int dim;
     if(!f.is_open()){
@@ -37,18 +283,23 @@ int main(int argc, char **argv){
                 dim = atoi(prov.c_str());
             }
         }
-        v.resize(dim);
-        float n, c, s;
-        for(vector<nodo>::iterator i= v.begin(); i != v.end(); ++i){
+        g.reservar(dim);
+        int n;
+        float c, s;
+        for(GrafoTSP::iterator i= g.begin(); i != g.end(); ++i){
             f >> n >> c >> s;
-            i->node = n;
-            i ->coord = c; 
-            i ->section = s;
+            (*i).setNode(n);
+            (*i).setCoord(c); 
+            (*i).setSection(s);
         }
         f.close();
 
-         for(vector<nodo>::iterator i= v.begin(); i != v.end(); ++i)
-            cout << i->node << " " <<i ->coord  << " " <<  i ->section<< endl;   
+        h = greedy(g);
+
+        g.mostrar();
+        cout << endl << endl << endl << endl << endl;
+        h.mostrar();
+           
             
     }
 }
