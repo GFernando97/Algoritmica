@@ -41,6 +41,7 @@ Por último, para evitar complicaciones en cuanto a entrada de datos o bancos de
 
 */
 
+//Crearemos una clase Para tener mejor manejo de los datos de cada tarea
 class Task{
 private:
   string ID_; //Identificador de la tarea
@@ -48,22 +49,32 @@ private:
   long B_;    //Beneficio Generado por la realización de la tarea
 public:
 
+  //Constructor vacío
   Task();
 
+  //Constructor con parámetros
   Task(string new_ID, double new_T, long new_B): ID_(new_ID), T_(new_T), B_(new_B){}
 
+  //Método para obtener el ID de la tarea actual
   string get_ID()const{return ID_;}
 
+  //Método para obtener el limite de Tiempo permitido por la tarea
   int get_T()const{return T_;}
 
+  //Método para obtener el beneficio que genera la realización de la tarea
   long get_B()const{return B_;}
 
+  //Método de asignación de ID para la tarea
   void set_ID(string new_ID){ID_ = new_ID;}
 
+  //Método de asignacion del límite de Tiempo de la tarea
   void set_T(int new_T){T_ = new_T;}
 
+  //Método de asignacion del beneficio generado por la tarea
   void set_B(long new_B){B_ = new_B;}
 
+
+  //Método creado para facilitar la salida de los datos de cada tarea
   void printTask(){
     cout << "Identificador: " << get_ID() 
          << "  Plazo limite: " << get_T()
@@ -73,7 +84,8 @@ public:
 
 
 
-/*Sobrecarga de operador < para poder realizar la comparación entre objetos de la misma clase. Este será usado por el Tipo de dato priority_queue para poder elegir los objetos segun la prioridad que deseemos.
+/*Sobrecarga de operador < para poder realizar la comparación entre objetos de la misma clase. 
+Este será usado por el Tipo de dato priority_queue para poder elegir los objetos segun la prioridad que deseemos.
 */
 bool operator<(const Task &t1, const Task &t2){
   return (t1.get_B()< t2.get_B());
@@ -130,16 +142,27 @@ int main(int argc, char * argv[]){
   
   int n = atoi(argv[1]);
   
+
+  //Generamos el conjunto de tareas y las insertamos dentro de la cola de prioridades 
   taskGenerator(Schedule, n);
 
   cout << "El numero de tareas generadas es: " << n << endl;
   printQueue(Schedule);
 
   
+  //La caracterísitca principal de greedy se realiza aquí. Realizaremos un análisis detallado de esta parte.
+
   while(!Schedule.empty()){
+
+    //Como hemos ordenado la cola de prioridades de forma que el beneficio sea aquel que determine el orden por prioridad,
+    //Sabemos a ciencia cierta que la primera tarea que saquemos de la misma es la que mayor beneficio aporta.
     Task  singleTask = Schedule.top();
     Schedule.pop();
 
+    //La segunda parte del algoritmo a tener en cuenta es que la tarea que intentemos realizar debe estar dentro del rango
+    //de limite de tiempo permitido para su realización
+    //Para comprobar esto, realizaremos una comparación con las unidades de tiempo actual utilizadas y las permitidas por la tarea.
+    //En caso de que las unidades actuales sean mayores que las permitidas por la tarea, descartamos la misma y pasamos a analizar la siguiente 
     if(singleTask.get_T() >= TIME_UNITY){
       TOTAL_BENEFIT += singleTask.get_B();
       TIME_UNITY++;
@@ -147,6 +170,9 @@ int main(int argc, char * argv[]){
       cout << "ID de tarea extraida: " << singleTask.get_ID() << endl;
       cout << "Beneficio actual: " << TOTAL_BENEFIT << endl;
       cout << "Unidades de tiempo utilizadas: " << TIME_UNITY << endl << endl;
+
+      //Si el tiempo actual se encuentra dentro del rango permitido para la tarea, añadimos esta a una nueva cola,
+      //de forma que aseguramos escoger en cada momento aquella tarea que mejor beneficio tenga en cada momento.
       FinalSchedule.push(singleTask);
     }
     else cout << "Se omite esta tarea por haber superado el limite de tiempo."<< endl << endl;
