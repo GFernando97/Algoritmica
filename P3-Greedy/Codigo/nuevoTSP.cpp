@@ -10,19 +10,32 @@
 using namespace std;
 
 float calcular_distancia(float x1, float x2, float y1, float y2) {
-  return sqrt(pow(x1-x2, 2)+pow(y1-y2,2));
+  return round(sqrt(pow(x1-x2, 2)+pow(y1-y2,2)));
 }
 
-int main() {
+int main(int argc, char ** argv) {
 
-  ifstream infile("ulysses16.tsp");
+  // Lectura de los parametros de entrada
+  if (argc != 2)
+  {
+    cout << "Parametros de entrada: " << endl
+    << "1.- Nombre del fichero TSP" << endl << endl;
+    return 1;
+  }
+
+  ifstream infile(argv[1]);
   string line, text;
   int dimension, err, menordistancia_n1, menordistancia_n2, arista_union;
-  float var1, var2, var3, menordistancia;
+  float var1, var2, var3, menordistancia, distancias_aristas;
   vector<int> n, n_aux, aristas;
-  vector<float> x, y, distancias_aristas;
+  vector<float> x, y;
   vector< vector<float> > distancia;
   bool repetidas, encontrado;
+
+  if (!infile.is_open()) {
+    cout << "Fichero no encontrado" << endl;
+    return 0;
+  }
 
   if (!getline(infile, line))
     return 0;
@@ -56,6 +69,8 @@ int main() {
     y.push_back(var3);
   }
 
+  infile.close();
+
   distancia.resize( dimension, vector<float>(dimension) );
 
   // Cálculo de todas las distancias
@@ -64,6 +79,8 @@ int main() {
       distancia[i][j] = calcular_distancia(x[i],x[j],y[i],y[j]);
     }
   }
+
+  distancias_aristas = 0.0;
 
   // Ordenas aristas de menos a mayor
   while (aristas.size() < pow(dimension, 2) - dimension) {
@@ -96,8 +113,8 @@ int main() {
 
     aristas.push_back(menordistancia_n1);
     aristas.push_back(menordistancia_n2);
-    distancias_aristas.push_back(menordistancia);
-  }
+    distancias_aristas += menordistancia;
+  } // end while
 
   n_aux.push_back(aristas[0]);
   n_aux.push_back(aristas[1]);
@@ -145,7 +162,10 @@ int main() {
     } // end for
   }//end while
 
+  cout << distancias_aristas + distancia[n_aux.front()][n_aux.back()] << endl;
+
   for (int i = 0; i < n_aux.size(); i++) {
     cout << n_aux[i]+1 << '\t' << x[n_aux[i]] << '\t' << y[n_aux[i]] << endl;
   }
+  cout << n_aux.front() << '\t' << x[n_aux.front()] << '\t' << y[n_aux.front()] << endl;
 }
