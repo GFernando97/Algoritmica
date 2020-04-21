@@ -15,7 +15,6 @@
 //      Hacer operaciones matematicas
 #include <cmath>
 //      Obtener el MAX_FLT
-#include <cfloat>
 #include <climits>
 
 using namespace std;
@@ -32,20 +31,27 @@ void tspCercania(float **matrizIN, float **&matrizOUT, int dim)
 {
     int nodoIni, nodoFin, nodoVec, caminoMin = 0, distActual, distanciaMin;
 
+    // Se elige un nodo del subconjunto de entrada
     nodoIni = 0;
     nodoFin = nodoIni;
 
+    // La en la solución se rellena con el primer nodo.
     matrizOUT[0][0] = matrizIN[nodoIni][0];
     matrizOUT[0][1] = matrizIN[nodoIni][1];
     matrizOUT[0][2] = matrizIN[nodoIni][2];
 
+    // Se quita el nodo de la lista de candidatos. Los elementos en la primera columna que tienen valores -1 son aquellos que ya han sido usados.
     matrizIN[nodoIni][0] = -1;
 
+    // Se repetirá el bucle hasta que la lista de candidatos quede totalmente utilizada, esto es la dimensión original-1, el nodo inicial removido.
     for (int i = 0; i < dim-1; i++)
     {  
         distanciaMin = INT_MAX;
+
+        // Se selecciona el nodo de la lista de candidatos donde su distancia desde el nodoInicial al ese sea la menor.
         for (int j = 0; j < dim; j++)
         {
+            // No se toman en cuenta los candidatos ya utilizados.
             if(matrizIN[j][0] >= 0)
             {
                 distActual = calcularDistancia(matrizIN[j][1], matrizIN[nodoIni][1], matrizIN[j][2], matrizIN[nodoIni][2]);
@@ -65,9 +71,12 @@ void tspCercania(float **matrizIN, float **&matrizOUT, int dim)
         matrizOUT[i+1][1] = matrizIN[nodoVec][1];
         matrizOUT[i+1][2] = matrizIN[nodoVec][2];
 
+        // El candidato ya utilizado se remueve de la lista de candidatos
         matrizIN[nodoVec][0] = -1;
         nodoIni = nodoVec;
     }
+
+        // Se añade el camino desde el último nodo al nodo de inicio.
         matrizOUT[dim][0] = matrizOUT[0][0];
         matrizOUT[dim][1] = matrizOUT[0][1];
         matrizOUT[dim][2] = matrizOUT[0][2];
@@ -138,13 +147,6 @@ int main(int argc, char * argv[])
     }
 
     else cout << "No se puede abrir el archivo."; 
-
-
-  /*    for(int i=0; i<dim; i++)
-        {
-            cout << matriz[i][0] << " "<<matriz[i][1]<<" "<<matriz[i][2]<<endl;
-        }
-*/
 
    tspCercania(matriz,matrizOUT,dim);
 
