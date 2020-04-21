@@ -130,16 +130,27 @@ int main(int argc, char * argv[]){
   
   int n = atoi(argv[1]);
   
+
+  //Generamos el conjunto de tareas y las insertamos dentro de la cola de prioridades 
   taskGenerator(Schedule, n);
 
   cout << "El numero de tareas generadas es: " << n << endl;
   printQueue(Schedule);
 
   
+  //La caracterísitca principal de greedy se realiza aquí. Realizaremos un análisis detallado de esta parte.
+
   while(!Schedule.empty()){
+
+    //Como hemos ordenado la cola de prioridades de forma que el beneficio sea aquel que determine el orden por prioridad,
+    //Sabemos a ciencia cierta que la primera tarea que saquemos de la misma es la que mayor beneficio aporta.
     Task  singleTask = Schedule.top();
     Schedule.pop();
 
+    //La segunda parte del algoritmo a tener en cuenta es que la tarea que intentemos realizar debe estar dentro del rango
+    //de limite de tiempo permitido para su realización
+    //Para comprobar esto, realizaremos una comparación con las unidades de tiempo actual utilizadas y las permitidas por la tarea.
+    //En caso de que las unidades actuales sean mayores que las permitidas por la tarea, descartamos la misma y pasamos a analizar la siguiente 
     if(singleTask.get_T() >= TIME_UNITY){
       TOTAL_BENEFIT += singleTask.get_B();
       TIME_UNITY++;
@@ -147,6 +158,9 @@ int main(int argc, char * argv[]){
       cout << "ID de tarea extraida: " << singleTask.get_ID() << endl;
       cout << "Beneficio actual: " << TOTAL_BENEFIT << endl;
       cout << "Unidades de tiempo utilizadas: " << TIME_UNITY << endl << endl;
+
+      //Si el tiempo actual se encuentra dentro del rango permitido para la tarea, añadimos esta a una nueva cola,
+      //de forma que aseguramos escoger en cada momento aquella tarea que mejor beneficio tenga en cada momento.
       FinalSchedule.push(singleTask);
     }
     else cout << "Se omite esta tarea por haber superado el limite de tiempo."<< endl << endl;
