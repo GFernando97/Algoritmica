@@ -46,6 +46,7 @@ int main(int argc, char ** argv) {
   if (!getline(infile, line))
     return 0;
 
+  // Lectura dimensión del fichero TSP
   infile >> text >> dimension;
 
   if (!getline(infile, line))
@@ -60,6 +61,7 @@ int main(int argc, char ** argv) {
   if (!getline(infile, line))
     return 0;
 
+  // Lectura del número del nodo, su posición x e y
   for (int i = 0; i < dimension && getline(infile, line); i++) {
     istringstream ss(line);
 
@@ -73,7 +75,21 @@ int main(int argc, char ** argv) {
 
   distancia.resize( dimension, vector<float>(dimension) );
 
-  // Cálculo de todas las distancias
+  // Cálculo de todas las distancias entre todos los puntos:
+  //    1  2  3  4  5
+  // 1 [0][a][b][c][d]
+  // 2 [a][0][e][f][g]
+  // 3 [b][e][0][h][i]
+  // 4 [c][f][h][0][j]
+  // 5 [d][g][i][j][0]
+  // Al ser de esta forma la matriz obtenida podemos usar
+  // una matriz triangular:
+  //    1  2  3  4  5
+  // 1 [0][a][b][c][d]
+  // 2    [0][e][f][g]
+  // 3       [0][h][i]
+  // 4          [0][j]
+  // 5             [0]
   for (int i = 0; i < dimension; i++) {
     for (int j = i; j < dimension; j++) {
       distancia[i][j] = calcular_distancia(x[i],x[j],y[i],y[j]);
@@ -82,7 +98,12 @@ int main(int argc, char ** argv) {
 
   distancias_aristas = 0.0;
 
-  // Ordenas aristas de menos a mayor
+  // Ordenamos las distancias de menor a mayor para mejorar
+  // el tiempo de obtención de la mejor opción; el vector
+  // resultante lo trataríamos de la siguente manera:
+  // aristas = [1,2][2,4][4,5][3,1]...
+  // Teniendo en él todas las combinaciones de parejas posibles
+  // sin estas repetidas, por ejemplo [1,2] y [2,1].
   while (aristas.size() < pow(dimension, 2) - dimension) {
 
     menordistancia = 999.9;
@@ -90,9 +111,12 @@ int main(int argc, char ** argv) {
     menordistancia_n2 = -1;
     repetidas = false;
 
+    // Recorrido de la matriz triangular
     for (int i = 0; i < dimension; i++) {
       for (int j = i; j < dimension; j++) {
 
+        // Si es la distancia es menor que la que tengo ahora y no está
+        // en la diagonal ni ya añadida la guardamos como la distancia menor
         if (distancia[i][j] < menordistancia && i != j) {
 
           for (int k = 0; k < aristas.size(); k += 2) {
@@ -111,10 +135,28 @@ int main(int argc, char ** argv) {
       }
     }
 
+    // Encontrada la menor distancia la añadimos a nuestro vector de aristas
     aristas.push_back(menordistancia_n1);
     aristas.push_back(menordistancia_n2);
     distancias_aristas += menordistancia;
   } // end while
+
+  // Una vez obtenido el vector con las aristas ordenadas de menor a mayor
+  // distancia empezamos con la construcción del camino;
+  // 1.- Cogemos la primera arista ya que esta es la de menor distancia y
+  //     la añadimos a la solución por ser la mejor opción.
+  // 2.- Eliminamos la arista de nuestro vector de aristas
+  // 3.- Cogemos la siguiente pareja de aristas.
+  // 4.- Si una de los nodos coincide con algun nodo terminal de nuestra
+  //     actual solución añadimos ese nodo a la solución.
+  //           Ejemplo:
+  //                S = [1, 2]      a = [1,3]
+  //                      S = [3, 1, 2]
+  // 5.- El nodo que hemos usado como unión, está en mitad del recorrido y
+  //     ya no se le podrán unir más nodos por lo que eliminamos todas las
+  //     aristas que lo contengan.
+  // 6.- Repetimos a partir del paso 3 hasta que la solución tenga el mismo
+  //     tamaño que el número de nodos.
 
   n_aux.push_back(aristas[0]);
   n_aux.push_back(aristas[1]);
@@ -162,10 +204,12 @@ int main(int argc, char ** argv) {
     } // end for
   }//end while
 
+  // Unimos el último nodo con el nodo inicial y calculamos las distancias.
+
   cout << distancias_aristas + distancia[n_aux.front()][n_aux.back()] << endl;
 
   for (int i = 0; i < n_aux.size(); i++) {
     cout << n_aux[i]+1 << '\t' << x[n_aux[i]] << '\t' << y[n_aux[i]] << endl;
   }
-  cout << n_aux.front() << '\t' << x[n_aux.front()] << '\t' << y[n_aux.front()] << endl;
+  cout << n_aux.front()+1 << '\t' << x[n_aux.front()] << '\t' << y[n_aux.front()] << endl;
 }
