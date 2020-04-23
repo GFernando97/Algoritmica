@@ -96,8 +96,6 @@ int main(int argc, char ** argv) {
     }
   }
 
-  distancias_aristas = 0.0;
-
   // Ordenamos las distancias de menor a mayor para mejorar
   // el tiempo de obtención de la mejor opción; el vector
   // resultante lo trataríamos de la siguente manera:
@@ -138,7 +136,6 @@ int main(int argc, char ** argv) {
     // Encontrada la menor distancia la añadimos a nuestro vector de aristas
     aristas.push_back(menordistancia_n1);
     aristas.push_back(menordistancia_n2);
-    distancias_aristas += menordistancia;
   } // end while
 
   // Una vez obtenido el vector con las aristas ordenadas de menor a mayor
@@ -160,6 +157,7 @@ int main(int argc, char ** argv) {
 
   n_aux.push_back(aristas[0]);
   n_aux.push_back(aristas[1]);
+  distancias_aristas = distancia[aristas[0]][aristas[1]];
   aristas.erase(aristas.begin());
   aristas.erase(aristas.begin());
 
@@ -173,21 +171,25 @@ int main(int argc, char ** argv) {
         encontrado = true;
         arista_union = aristas[i];
         n_aux.insert(n_aux.begin(), aristas[i+1]);
+        distancias_aristas += distancia[aristas[i]][aristas[i+1]];
       }
       else if (aristas[i] == n_aux.back()) {
         encontrado = true;
         arista_union = aristas[i];
         n_aux.push_back(aristas[i+1]);
+        distancias_aristas += distancia[aristas[i]][aristas[i+1]];
       }
       else if (aristas[i+1] == n_aux.front()) {
         encontrado = true;
         arista_union = aristas[i+1];
         n_aux.insert(n_aux.begin(), aristas[i]);
+        distancias_aristas += distancia[aristas[i]][aristas[i+1]];
       }
       else if (aristas[i+1] == n_aux.back()) {
         encontrado = true;
         arista_union = aristas[i+1];
         n_aux.push_back(aristas[i]);
+        distancias_aristas += distancia[aristas[i]][aristas[i+1]];
       }
     } // end for
 
