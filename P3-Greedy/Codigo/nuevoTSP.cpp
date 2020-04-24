@@ -24,48 +24,33 @@ int main(int argc, char ** argv) {
   }
 
   ifstream infile(argv[1]);
+  istringstream aux_stringstream;
   string line, text;
-  int dimension, err, menordistancia_n1, menordistancia_n2, arista_union;
+  int aux, dimension, err, menordistancia_aux, arista_union;
   float var1, var2, var3, menordistancia, distancias_aristas;
-  vector<int> n, n_aux, aristas;
-  vector<float> x, y;
+  vector<int> n, n_aux, aristas, aristas_aux;
+  vector<float> x, y, distancias_aux;
   vector< vector<float> > distancia;
   bool repetidas, encontrado;
 
-  if (!infile.is_open()) {
-    cout << "Fichero no encontrado" << endl;
-    return 0;
+  if (infile.is_open()) {
+    while (line.compare("NODE_COORD_SECTION") != 0) {
+      getline(infile, line);
+      aux = line.find("DIMENSION");
+      if (aux != -1) {
+        aux = line.find(":");
+        aux_stringstream.str(line.substr(aux+1,-1));
+        aux_stringstream >> dimension;
+      }
+    }
+  }
+  else {
+    cout << "Archivo no encontrado" << endl;
   }
 
-  if (!getline(infile, line))
-    return 0;
-
-  if (!getline(infile, line))
-    return 0;
-
-  if (!getline(infile, line))
-    return 0;
-
-  // Lectura dimensión del fichero TSP
-  infile >> text >> dimension;
-
-  if (!getline(infile, line))
-    return 0;
-
-  if (!getline(infile, line))
-    return 0;
-
-  if (!getline(infile, line))
-    return 0;
-
-  if (!getline(infile, line))
-    return 0;
-
   // Lectura del número del nodo, su posición x e y
-  for (int i = 0; i < dimension && getline(infile, line); i++) {
-    istringstream ss(line);
-
-    ss >> var1 >> var2 >> var3;
+  for (int i = 0; i < dimension; i++) {
+    infile >> var1 >> var2 >> var3;
     n.push_back(var1);
     x.push_back(var2);
     y.push_back(var3);
@@ -92,7 +77,12 @@ int main(int argc, char ** argv) {
   // 5             [0]
   for (int i = 0; i < dimension; i++) {
     for (int j = i; j < dimension; j++) {
-      distancia[i][j] = calcular_distancia(x[i],x[j],y[i],y[j]);
+      if (i != j) {
+        distancia[i][j] = calcular_distancia(x[i],x[j],y[i],y[j]);
+        distancias_aux.push_back(distancia[i][j]);
+        aristas_aux.push_back(i);
+        aristas_aux.push_back(j);
+      }
     }
   }
 
@@ -102,40 +92,22 @@ int main(int argc, char ** argv) {
   // aristas = [1,2][2,4][4,5][3,1]...
   // Teniendo en él todas las combinaciones de parejas posibles
   // sin estas repetidas, por ejemplo [1,2] y [2,1].
-  while (aristas.size() < pow(dimension, 2) - dimension) {
+  while (aristas.size() < (dimension-1)*dimension) {
 
-    menordistancia = 999.9;
-    menordistancia_n1 = -1;
-    menordistancia_n2 = -1;
-    repetidas = false;
+    menordistancia = FLT_MAX;
 
-    // Recorrido de la matriz triangular
-    for (int i = 0; i < dimension; i++) {
-      for (int j = i; j < dimension; j++) {
-
-        // Si es la distancia es menor que la que tengo ahora y no está
-        // en la diagonal ni ya añadida la guardamos como la distancia menor
-        if (distancia[i][j] < menordistancia && i != j) {
-
-          for (int k = 0; k < aristas.size(); k += 2) {
-            if ( (aristas[k] == i || aristas[k] == j) && (aristas[k+1] == i || aristas[k+1] == j) ) {
-                repetidas = true;
-            }
-          }
-
-          if (!repetidas) {
-            menordistancia = distancia[i][j];
-            menordistancia_n1 = i;
-            menordistancia_n2 = j;
-          }
-          else repetidas = false;
-        }
+    for (int i = 0; i < distancias_aux.size(); i++) {
+      if (distancias_aux[i] < menordistancia) {
+        menordistancia = distancias_aux[i];
+        menordistancia_aux = i;
       }
     }
 
     // Encontrada la menor distancia la añadimos a nuestro vector de aristas
-    aristas.push_back(menordistancia_n1);
-    aristas.push_back(menordistancia_n2);
+    aristas.push_back(aristas_aux[menordistancia_aux*2]);
+    aristas.push_back(aristas_aux[menordistancia_aux*2+1]);
+    distancias_aux.erase(distancias_aux.begin()+menordistancia_aux);
+    aristas_aux.erase(aristas_aux.begin()+menordistancia_aux*2,aristas_aux.begin()+menordistancia_aux*2+2);
   } // end while
 
   // Una vez obtenido el vector con las aristas ordenadas de menor a mayor
@@ -162,6 +134,8 @@ int main(int argc, char ** argv) {
   aristas.erase(aristas.begin());
 
   while (n_aux.size() < dimension) {
+
+    //cout << 'n' << n_aux.size() << '\n';
 
     encontrado = false;
 
