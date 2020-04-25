@@ -1,7 +1,7 @@
 #	Asignatura: Algoritmica
 #	Trabajo: Práctica 3 - Greedy
 
-all: cercaniaTSP_exe insercionTSP_exe asignacionTareas_exe nuevoTSP_exe
+all: cercaniaTSP_exe insercionTSP_exe asignacionTareas_exe aristasTSP_exe
 
 cercaniaTSP_exe : cercaniaTSP.cpp
 	g++ -Wall -std=c++17 -o $@ $<
