@@ -1,7 +1,7 @@
 #	Asignatura: Algorítmica
 #	Trabajo: Práctica 3 - Greedy
 #	Descripción: Script para visualizar los caminos de los grafos
-#	Uso: $gnuplot -c "Titulo" visualizarTour.gpi archivo.tsp archivo.tour
+#	Uso: $gnuplot -c visualizarTour.gpi "Titulo" archivo.tsp archivo.tour
 
 set term png size 800,600
 set grid
