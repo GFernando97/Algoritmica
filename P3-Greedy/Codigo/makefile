@@ -12,5 +12,5 @@ insercionTSP_exe : tsp_insercion.cpp
 asignacionTareas_exe : AsignacionTareas.cpp
 	g++ -Wall -std=c++17 -o $@ $<
 
-nuevoTSP_exe : nuevoTSP.cpp
+aristasTSP_exe : aristasTSP.cpp
 	g++ -Wall -std=c++17 -o $@ $<
