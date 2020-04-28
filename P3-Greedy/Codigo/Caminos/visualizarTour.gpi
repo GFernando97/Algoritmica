@@ -9,4 +9,8 @@ set title ARG1
 set output ARG3 . '.png'
 plot ARG3 using 2:3 w l lw 2 notitle, ARG2 using 2:3 w point pt 7 ps 1.5 notitle
 
+# 	Con números
+#plot ARG3 using 2:3 w l lw 2 notitle, ARG2  using 2:3:(sprintf("%d",$1)) with labels point pt 7 offset char 2,0.5 notitle
+
+
 

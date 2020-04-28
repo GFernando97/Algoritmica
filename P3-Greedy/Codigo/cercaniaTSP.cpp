@@ -66,12 +66,12 @@ void tspCercania(vector<nodo> ciudades, vector<nodo> &tour, int inicio, int &cam
     while (!ciudades.empty())
     {
 //      Tomando la ciudad actualmente elegida, se itera en el vector de Candidatos buscando otra ciudad que tiene la distancia más corta hacia ella.
-//      Si existen dos o más con la misma distancia, se toma la última.
+//      Si existen dos o más con la misma distancia, se toma la primera.
         distanciaMin = INT_MAX;
         for (int i = 0; i < (int)ciudades.size(); i++)
         {
             distanciaAct = calcularDistancia(ciudades[i].x, nodoIni.x, ciudades[i].y, nodoIni.y);   
-            if(distanciaMin >= distanciaAct)
+            if(distanciaMin > distanciaAct)
             {
 //              Se actualiza la distancia minima hasta obtener la mas pequeña de todas y también el nodo asociado a ella.
                 distanciaMin = distanciaAct;
