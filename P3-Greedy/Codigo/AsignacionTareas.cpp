@@ -113,6 +113,29 @@ void taskGenerator(priority_queue<Task> &cola, int nTasks){
 
 }
 
+void trapGenerator(priority_queue<Task> &cola){
+ 
+  Task aux("ID_342", 1, 452);
+  cola.push(aux);
+
+  Task aux2("ID_342", 2, 365);
+  cola.push(aux2);
+
+  Task aux3("ID_342", 3, 362);
+  cola.push(aux3);
+
+  Task aux4("ID_342", 4, 298);
+  cola.push(aux4);
+
+  Task aux5("ID_342", 5, 256);
+  cola.push(aux5);
+
+  Task aux6("ID_342", 6, 97);
+  cola.push(aux6);
+
+
+}
+
 
 //Metodo auxiliar para imprimir el contenido de la cola
 void printQueue(priority_queue <Task> q) 
@@ -146,6 +169,9 @@ int main(int argc, char * argv[]){
   //Generamos el conjunto de tareas y las insertamos dentro de la cola de prioridades 
   taskGenerator(Schedule, n);
 
+  
+  //trapGenerator(Schedule);
+
   cout << "El numero de tareas generadas es: " << n << endl;
   printQueue(Schedule);
 
@@ -163,19 +189,19 @@ int main(int argc, char * argv[]){
     //de limite de tiempo permitido para su realización
     //Para comprobar esto, realizaremos una comparación con las unidades de tiempo actual utilizadas y las permitidas por la tarea.
     //En caso de que las unidades actuales sean mayores que las permitidas por la tarea, descartamos la misma y pasamos a analizar la siguiente 
-    if(singleTask.get_T() >= TIME_UNITY){
+    if(singleTask.get_T() > TIME_UNITY){
       TOTAL_BENEFIT += singleTask.get_B();
       TIME_UNITY++;
 
-      cout << "ID de tarea extraida: " << singleTask.get_ID() << endl;
-      cout << "Beneficio actual: " << TOTAL_BENEFIT << endl;
-      cout << "Unidades de tiempo utilizadas: " << TIME_UNITY << endl << endl;
+      cout << "ID de tarea ejecutada: " << singleTask.get_ID() << endl;
+      cout << "Beneficio actual: " << TOTAL_BENEFIT << endl << endl;
+      //cout << "Unidades de tiempo utilizadas: " << TIME_UNITY << endl << endl;
 
       //Si el tiempo actual se encuentra dentro del rango permitido para la tarea, añadimos esta a una nueva cola,
       //de forma que aseguramos escoger en cada momento aquella tarea que mejor beneficio tenga en cada momento.
       FinalSchedule.push(singleTask);
     }
-    else cout << "Se omite esta tarea por haber superado el limite de tiempo."<< endl << endl;
+    else cout << "Se omite esta tarea con identificador " << singleTask.get_ID() <<" por haber superado el limite de tiempo."<< endl << endl;
 
   } 
 
