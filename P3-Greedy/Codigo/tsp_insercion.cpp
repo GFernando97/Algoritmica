@@ -230,7 +230,7 @@ class GrafoTSP{
         }
 };
 
-GrafoTSP greedy(GrafoTSP g){
+GrafoTSP insercionTSP(GrafoTSP g){
     //El grafo de la solucion es vacio inicialmente (optimo).
     //La copia de "g" que le pasamos a la funcion sera nuestro conjunto de candidatos
     GrafoTSP optimo; 
@@ -292,7 +292,7 @@ int main(int argc, char **argv){
         }
         f.close();
 
-        h = greedy(g);
+        h = insercionTSP(g);
 
         cout << "Grafo inicial\n";
 
