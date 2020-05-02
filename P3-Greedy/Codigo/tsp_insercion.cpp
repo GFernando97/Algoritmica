@@ -20,7 +20,8 @@ class nodo{
         void setSection(float n){section=n;}
         float distancia(nodo n2){
             float dif1 = n2.getCoord() - getCoord(), dif2 = n2.getSection() - getSection();
-            return sqrt(dif1*dif1+dif2*dif2);
+            
+            return round(sqrt(dif1*dif1+dif2*dif2));
         }   
         bool operator==(const nodo & n){
             bool iguales = false;
@@ -158,7 +159,7 @@ class GrafoTSP{
 
         void mostrar(){
             for (GrafoTSP::iterator i=begin(); i!=end(); ++i){
-                cout << (*i).getNode()<< " " << (*i).getCoord() << " " << (*i).getSection() << endl; 
+                cout << (*i).getNode()<< "\t"<< (*i).getCoord() << "\t" << (*i).getSection() << endl; 
             }
         }
 
@@ -230,9 +231,10 @@ class GrafoTSP{
         }
 };
 
-GrafoTSP insercionTSP(GrafoTSP g){
+GrafoTSP insercionTSP(GrafoTSP g, float &dist){
     //El grafo de la solucion es vacio inicialmente (optimo).
     //La copia de "g" que le pasamos a la funcion sera nuestro conjunto de candidatos
+    dist =g.masAlEste().distancia(g.masAlNorte())+g.masAlNorte().distancia(g.masAlOeste());
     GrafoTSP optimo; 
     int size_final = g.size();
     pair<nodo,nodo> aux;
@@ -247,9 +249,10 @@ GrafoTSP insercionTSP(GrafoTSP g){
 
     //Mientras S no sea solucion(hasta que el grafo no tenga el tamaño esperado) y C != 0 (la lista de candidatos quede vacia) ...
     while(optimo.size() < size_final && g.size() > 0){
-        g.eliminar(aux.second);
         aux = optimo.seleccionar(g);
         optimo.insertar(aux.second, aux.first);
+        dist += aux.first.distancia(aux.second);
+        g.eliminar(aux.second);
     }
     optimo.insertafinal(*(optimo.begin()));
     return optimo;
@@ -292,16 +295,21 @@ int main(int argc, char **argv){
         }
         f.close();
 
-        h = insercionTSP(g);
+        float d;
 
-        cout << "Grafo inicial\n";
+        h = insercionTSP(g, d);
+
+    cout << "Grafo inicial\n";
 
         g.mostrar();
-        cout << endl << endl << endl << endl << endl;
+        cout << endl << endl << endl << endl << endl; 
         
-        cout << "Recorrido greedy por insercion\n";
+       cout << "Recorrido greedy por insercion\n";
 
         h.mostrar();
+
+        cout << "\n\n\nDistancia:\n" << d << endl;
+
            
             
     }
