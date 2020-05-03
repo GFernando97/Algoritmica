@@ -118,7 +118,7 @@ int main(int argc, char * argv[])
         cout << matrizNXY[i][0] << "\t" << matrizNXY[i][1] << "\t" << matrizNXY[i][2] << endl;
     }
     
-	cout << matrizTSP[0][0] <<"\t"<<matrizTSP[0][1]<<"\t"<<matrizTSP[0][2]<<endl;
+	cout << matrizNXY[0][0] <<"\t"<<matrizNXY[0][1]<<"\t"<<matrizNXY[0][2]<<endl;
 
 // Eliminar la matriz.
  for (int i = 0; i < dim; i++)
