@@ -7,6 +7,10 @@
 
 using namespace std;
 
+int calcularDistancia(float x2, float x1, float y2, float y1){
+    return (int)(round ( sqrt( pow(x2 - x1, 2) + pow(y2 - y1, 2) ) ) );
+}
+
 class nodo{
     private:
         int node;
@@ -18,10 +22,8 @@ class nodo{
         void setNode(int n){node = n;}
         void setCoord(float n){coord=n;}
         void setSection(float n){section=n;}
-        float distancia(nodo n2){
-            float dif1 = n2.getCoord() - getCoord(), dif2 = n2.getSection() - getSection();
-            
-            return round(sqrt(dif1*dif1+dif2*dif2));
+        int distancia(nodo n2){
+            return (int) round(sqrt(pow(n2.getCoord()-getCoord(),2)+pow(n2.getSection()-getSection(),2)));
         }   
         bool operator==(const nodo & n){
             bool iguales = false;
@@ -157,6 +159,27 @@ class GrafoTSP{
             return res;
         }
 
+        float distanciaRecorrido(){
+            float camino=0;
+            int dim=size();
+            float ** m=new float*[size()];
+            for(int i=0; i<size();i++){
+                m[i] = new float [3];
+            }
+            int i=0;
+            for(vector<nodo>::iterator it= v.begin(); it != v.end(); i++,++it){
+                m[i][0]=it->getNode();
+                m[i][1]=it->getCoord();
+                m[i][2]=it->getSection();
+            }
+            for (int i = 0; i < dim-1; i++)
+            {
+                camino += calcularDistancia(m[i+1][1], m[i][1], m[i+1][2], m[i][2]);
+            }
+            camino += calcularDistancia(m[0][1], m[dim-1][1], m[0][2], m[dim-1][2]);
+            return camino;
+        }
+
         void mostrar(){
             for (GrafoTSP::iterator i=begin(); i!=end(); ++i){
                 cout << (*i).getNode()<< "\t"<< (*i).getCoord() << "\t" << (*i).getSection() << endl; 
@@ -229,12 +252,12 @@ class GrafoTSP{
         void insertafinal(nodo n){
             v.insert(v.end(), n);
         }
+
 };
 
-GrafoTSP insercionTSP(GrafoTSP g, float &dist){
+GrafoTSP insercionTSP(GrafoTSP g){
     //El grafo de la solucion es vacio inicialmente (optimo).
     //La copia de "g" que le pasamos a la funcion sera nuestro conjunto de candidatos
-    dist =g.masAlEste().distancia(g.masAlNorte())+g.masAlNorte().distancia(g.masAlOeste());
     GrafoTSP optimo; 
     int size_final = g.size();
     pair<nodo,nodo> aux;
@@ -250,8 +273,7 @@ GrafoTSP insercionTSP(GrafoTSP g, float &dist){
     //Mientras S no sea solucion(hasta que el grafo no tenga el tamaño esperado) y C != 0 (la lista de candidatos quede vacia) ...
     while(optimo.size() < size_final && g.size() > 0){
         aux = optimo.seleccionar(g);
-        optimo.insertar(aux.second, aux.first);
-        dist += aux.first.distancia(aux.second);
+        optimo.insertar(aux.second, aux.first);        
         g.eliminar(aux.second);
     }
     optimo.insertafinal(*(optimo.begin()));
@@ -294,23 +316,23 @@ int main(int argc, char **argv){
             (*i).setSection(s);
         }
         f.close();
-
-        float d;
-
-        h = insercionTSP(g, d);
-
-    cout << "Grafo inicial\n";
-
-        g.mostrar();
-        cout << endl << endl << endl << endl << endl; 
-        
-       cout << "Recorrido greedy por insercion\n";
-
-        h.mostrar();
-
-        cout << "\n\n\nDistancia:\n" << d << endl;
-
-           
-            
     }
+       
+    float d;
+
+    h = insercionTSP(g);
+    d=h.distanciaRecorrido();
+        
+
+    cout << "\n\nGrafo inicial\n";
+
+    g.mostrar();
+    cout << endl << endl << endl << endl << endl; 
+        
+    cout << "Recorrido greedy por insercion\n";
+
+    h.mostrar();
+
+    cout << "\n\n\nDistancia:\n" << d << endl;
+
 }
