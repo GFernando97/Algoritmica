@@ -68,7 +68,6 @@ bool estaCalculado(int i, list<int> S,int** &memo)
         bitS.set(j);
 //        cout <<"J: "<<j<<endl;
     }
-
    // cout <<"memo: "<<i<<" "<<(int)bitS.to_ulong()<<endl;
   //  cout <<"memo="<<memo[i][(int)bitS.to_ulong()]<<endl;
     if(memo[(int)bitS.to_ulong()][i] >= 0)
@@ -105,33 +104,33 @@ int g(int ciuIni, list<int> &listCiu, list<int> &caminoCiu, int** dist, int** &m
     //cout << "Tamaño S="<<listCiu.size()<<endl;
     if(listCiu.empty())
     {
-       cout<<"g("<<ciuIni<<",0) caso base, devuelvo "<< dist[ciuIni][0]<<endl;
-        return dist[ciuIni][0];
+    //   cout<<"g("<<ciuIni<<",0) caso base, devuelvo "<< dist[ciuIni][0]<<endl;
+        return memo[0][ciuIni] = dist[ciuIni][0];
     }
     else if(estaCalculado(ciuIni,listCiu,memo))
     {
-       cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) en tabla="<<memo[calcularCoord(listCiu)][ciuIni]<<endl;
+    //   cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) en tabla="<<memo[calcularCoord(listCiu)][ciuIni]<<endl;
         return memo[calcularCoord(listCiu)][ciuIni];
     }
     else
     {
-        cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) no en tabla."<<endl;
+     //   cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) no en tabla."<<endl;
         int costoMini = INT_MAX, costoAct;
         int sigCiu;
         int S = listCiu.size();
         for (int i = 0; i < S; i++)
         {
             sigCiu = listCiu.front();
-            cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) entro en recursion."<<endl;
+        //    cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) entro en recursion."<<endl;
             listCiu.pop_front();
             costoAct = dist[ciuIni][sigCiu] + g(sigCiu,listCiu,caminoCiu,dist,memo);
             listCiu.push_front(sigCiu);
-            cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) de vuelta de recursión, costo: "<<costoAct<<endl;
+         //   cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) de vuelta de recursión, costo: "<<costoAct<<endl;
             if(costoAct < costoMini)
             {
                 costoMini = costoAct;
                 memo[calcularCoord(listCiu)][ciuIni] = costoMini;
-                    cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) costo actualizado="<<costoMini<<endl;
+         //           cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) costo actualizado="<<costoMini<<endl;
             }
             listCiu.pop_front();
             listCiu.push_back(sigCiu);
@@ -221,9 +220,9 @@ int main(int argc, char * argv[])
         for (auto j = 0; j < dim; j++)
         {
             memo[i][j] = -1;
-            cout<<memo[i][j]<<" ";
+//            cout<<memo[i][j]<<" ";
         }
-        cout<<endl;
+//        cout<<endl;
     }
 
     for (int i: listaCiudades)
@@ -235,21 +234,21 @@ int main(int argc, char * argv[])
     {
         for (int j = 0; j < dim; j++)
         {
-//            cout << matrizAdy[i][j]<<" ";
+            cout << matrizAdy[i][j]<<" ";
         }
-//        cout << endl;
+        cout << endl;
     }
     int caminoCosto = 0;
-    tsp(matrizAdy,listaCiudades,caminoCiudades, caminoCosto, memo);
+    tsp(matrizAdy, listaCiudades, caminoCiudades, caminoCosto, memo);
 
 
-    for (auto i = 0; i < dim; i++)
+    for (auto i = 0; i <  (1<<dim); i++)
     {
-        for (auto j = 0; j < (1<<dim); j++)
+        for (auto j = 0; j < dim; j++)
         {
-//            cout<<memo[i][j]<<" ";
+            cout<<memo[i][j]<<" ";
         }
-      //  cout<<endl;
+        cout<<endl;
     }
 
 
