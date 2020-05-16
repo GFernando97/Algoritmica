@@ -1,275 +1,177 @@
-/*ES:   Asignatura: Algoritmica
-        Trabajo: Practica 3 - Greedy
-        Descripcion: TSP con método de Cercanía */ 
-
-// LIBRERIAS
-//      Entrada/Salida
 #include <iostream>
-//      Vectores
 #include <vector>
-#include <list>
-//      Abrir archivos
-#include <fstream>
-//      Procesado de Cadenas
-#include <string>
-#include <sstream>
-//      Hacer operaciones matematicas
-#include <cmath>
-//      Obtener el MAX_INT
 #include <climits>
-#include <cstring>
-
-#include <bitset>
+#include <map>
+#include <sstream>
+#include <math.h>
+#include <fstream>
+#include <iterator>
 
 using namespace std;
 
-const int BITMAX=32;
+class TSP {
 
-//  FUNCIONES
-//      Funcion auxiliar para calcular distancia euclidea entre dos puntos.
-int calcularDistancia(double x2, double x1, double y2, double y1)
-{
-    return  (int)round( ( sqrt( pow(x2 - x1, 2) + pow(y2 - y1, 2) ) ) ) ;
-}
+  private:
 
-void rellenarMatAdj(int** &adyacencia, float** &entrada, int dim)
-{
-    for (auto i = 0; i < dim; i++)
-    {
-        for (auto j = 0; j < dim; j++)
-        {
-            if (i != j)
-            {
-                adyacencia[i][j] = calcularDistancia(entrada[i][1], entrada[j][1], entrada[i][2], entrada[j][2]);
-            }
-            else
-            {
-                adyacencia[i][j] = 0;
-            }
-            
-        }
+    vector< vector<int> > distancias;
+    map<string, int> gs;
+    vector<int> solucion;
+
+  public:
+
+    // Calculo de la distancia enter dos puntos
+    int calcular_distancia(float x1, float x2, float y1, float y2) {
+      return (int) round((sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2))));
     }
-}
 
+    // Constructor de la clase TSP
+    TSP (vector<float> x, vector<float> y) {
 
-struct nodo
-{
-    int indice;
-    double x;
-    double y;
+      int dimension = (int) x.size();
+      distancias.resize(dimension);
+
+      // Creacion de la matriz de distancias
+      for (int i = 0; i < dimension; i++) {
+        for (int j = 0; j < dimension; j++) {
+          distancias[i].push_back(this -> calcular_distancia(x[i],x[j],y[i],y[j]));
+        }
+      }
+    }
+
+    int g(int nodo, vector<int> s) {
+
+      int distancia_min, distancia_min_aux;
+      string ss_aux;
+      stringstream sss_aux;
+      vector<int> s_aux;
+      map<string, int>::iterator gsit;
+
+      distancia_min = INT_MAX;
+      distancia_min_aux = INT_MAX;
+
+      // Si 's' no está vacío
+      if (!s.empty()) {
+
+        copy(s.begin(), s.end(), ostream_iterator<int>(sss_aux, " "));
+        ss_aux = to_string(nodo) + ' ' + sss_aux.str();
+
+        // Comprobamos que g(nodo, s) lo hayamos calculado previamente
+        gsit = this -> gs.find(ss_aux);
+        if (gsit != this -> gs.end()) {
+          distancia_min = gsit -> second;
+        }
+        // No ha sido calculado g(nodo, s)
+        else {
+            for (int i = 0; i < (int) s.size(); i++) {
+              s_aux = s;
+              s_aux.erase(s_aux.begin()+i);
+
+              distancia_min_aux = distancias[nodo][s[i]] + g(s[i], s_aux);
+
+              if (distancia_min_aux < distancia_min) {
+                distancia_min = distancia_min_aux;
+              } // end if
+            } // end for
+
+            // Guardamso el valor de g(nodo, s)
+            gs[ss_aux] = distancia_min;
+        } // end else
+      }
+      // 's' está vacío
+      else {
+        distancia_min = distancias[nodo][0];
+      }
+      return distancia_min;
+    }
+
+    vector<int> camino(int nodo, vector<int> s) {
+
+      int distancia_min, distancia_min_aux, indice_nodo_min;
+      vector<int> solucion, sin_solucion, s_aux;
+
+      sin_solucion = s;
+      solucion.push_back(nodo);
+
+      while (solucion.size() <= s.size()) {
+
+        distancia_min = INT_MAX;
+        indice_nodo_min = -1;
+
+        for (int i = 0; i < (int) sin_solucion.size(); i++) {
+
+          s_aux = sin_solucion;
+          s_aux.erase(s_aux.begin()+i);
+
+          distancia_min_aux = distancias[solucion.back()][sin_solucion[i]] + g(sin_solucion[i], s_aux);
+
+          if (distancia_min_aux < distancia_min) {
+            distancia_min = distancia_min_aux;
+            indice_nodo_min = i;
+          }
+        }
+
+        solucion.push_back(sin_solucion[indice_nodo_min]);
+        sin_solucion.erase(sin_solucion.begin()+indice_nodo_min);
+      }
+
+      return solucion;
+    }
 };
 
-bool estaCalculado(int i, list<int> S,int** &memo)
-{
-    bitset<BITMAX> bitS;
+int main(int argc, char ** argv) {
 
-    for (int j : S )
-    {
-        bitS.set(j);
-//        cout <<"J: "<<j<<endl;
+  // Lectura de los parametros de entrada
+  if (argc != 2)
+  {
+    cout << "Parametros de entrada: " << endl << "1.- Nombre del fichero TSP" << endl << endl;
+    return 1;
+  }
+
+  ifstream infile(argv[1]);
+  istringstream aux_stringstream;
+  string line, text;
+  int aux, dimension;
+  float var1, var2, var3;
+  vector<int> n;
+  vector<float> x, y;
+
+  if (infile.is_open()) {
+    while (line.compare("NODE_COORD_SECTION") != 0) {
+      getline(infile, line);
+      aux = line.find("DIMENSION");
+      if (aux != -1) {
+        aux = line.find(":");
+        aux_stringstream.str(line.substr(aux+1,-1));
+        aux_stringstream >> dimension;
+      }
     }
-   // cout <<"memo: "<<i<<" "<<(int)bitS.to_ulong()<<endl;
-  //  cout <<"memo="<<memo[i][(int)bitS.to_ulong()]<<endl;
-    if(memo[(int)bitS.to_ulong()][i] >= 0)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
+  }
+  else {
+    cout << "Archivo no encontrado" << endl;
+  }
 
-int calcularCoord(list<int> S)
-{
-    bitset<BITMAX> bitS;
+  // Lectura del número del nodo, su posición x e y
+  for (int i = 0; i < dimension; i++) {
+    infile >> var1 >> var2 >> var3;
+    n.push_back(var1);
+    x.push_back(var2);
+    y.push_back(var3);
+  }
 
-    for (int j : S )
-    {
-        bitS.set(j);
-    }
-    return (int)bitS.to_ulong();
-}
+  infile.close();
 
-void print(list<int> S)
-{
-    for(int j: S)
-    {
-        cout<<j<<" ";
-    }
-}
+  TSP tsp(x, y);
 
-int g(int ciuIni, list<int> &listCiu, list<int> &caminoCiu, int** dist, int** &memo)
-{
-    //cout << "Tamaño S="<<listCiu.size()<<endl;
-    if(listCiu.empty())
-    {
-    //   cout<<"g("<<ciuIni<<",0) caso base, devuelvo "<< dist[ciuIni][0]<<endl;
-        return memo[0][ciuIni] = dist[ciuIni][0];
-    }
-    else if(estaCalculado(ciuIni,listCiu,memo))
-    {
-    //   cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) en tabla="<<memo[calcularCoord(listCiu)][ciuIni]<<endl;
-        return memo[calcularCoord(listCiu)][ciuIni];
-    }
-    else
-    {
-     //   cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) no en tabla."<<endl;
-        int costoMini = INT_MAX, costoAct;
-        int sigCiu;
-        int S = listCiu.size();
-        for (int i = 0; i < S; i++)
-        {
-            sigCiu = listCiu.front();
-        //    cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) entro en recursion."<<endl;
-            listCiu.pop_front();
-            costoAct = dist[ciuIni][sigCiu] + g(sigCiu,listCiu,caminoCiu,dist,memo);
-            listCiu.push_front(sigCiu);
-         //   cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) de vuelta de recursión, costo: "<<costoAct<<endl;
-            if(costoAct < costoMini)
-            {
-                costoMini = costoAct;
-                memo[calcularCoord(listCiu)][ciuIni] = costoMini;
-         //           cout<<"g("<<ciuIni<<",{";print(listCiu);cout<<"}) costo actualizado="<<costoMini<<endl;
-            }
-            listCiu.pop_front();
-            listCiu.push_back(sigCiu);
-        }
-        return costoMini;
-    }
-}
+  n.erase(n.begin());
+  for (int i = 0; i < (int) n.size(); i++) {
+    n[i] = n[i] - 1;
+  }
 
-void tsp(int** matrizAdy, list<int> &listaCiudades, list<int> &caminoCiudades, int &caminoCosto, int** &memo)
-{
-    int ciudadInicio = listaCiudades.front();
-    listaCiudades.pop_front();
-    caminoCosto = g(ciudadInicio, listaCiudades, caminoCiudades, matrizAdy, memo);
-    cout <<"Costo min:"<<caminoCosto<<endl;
-}
-//      Funcion Main
-int main(int argc, char * argv[])
-{
+  cout << tsp.g(0, n) << endl;
 
-    if (argc != 2)
-    {
-      cerr << "Formato: ./" << argv[0] << " <rutaArchivo.tsp>" << endl;
-      return -1;
-    }
+  n = tsp.camino(0, n);
 
-    float **entrada,**matrizOUT;
-    int dim;
-    string linea = "";
-    istringstream aux2;
-    ifstream archivo (argv[1]);
-    list<int> listaCiudades, caminoCiudades;
-    if (archivo.is_open())
-    {
-        int aux;
-        while (linea.compare("NODE_COORD_SECTION") != 0)
-        {
-            getline(archivo,linea);
-            aux = linea.find("DIMENSION");
-            if(aux != -1)
-            {
-                aux = linea.find(":");
-                aux2.str(linea.substr(aux+1,-1));
-                aux2 >> dim;
-            }
-        }
-
-        entrada = new float*[dim];
-        matrizOUT = new float*[dim+1];
-
-        float a,b,c;
-        for(int i=0; i<dim; i++)
-        {
-            archivo >> a >> b >> c;
-            entrada[i] = new float[3];
-            entrada[i][0] = a;
-            entrada[i][1] = b;
-            entrada[i][2] = c;
-
-            matrizOUT[i] = new float[3];
-            matrizOUT[i][0] = 0;
-            matrizOUT[i][1] = 0;
-            matrizOUT[i][2] = 0;
-            
-            listaCiudades.push_back(a-1);
-        }
-        matrizOUT[dim] = new float[3];
-        archivo.close();
-    }
-    else cout << "No se puede abrir el archivo."; 
-
-    int **matrizAdy = new int*[dim];
-    for (auto i = 0; i < dim; i++)
-    {
-        matrizAdy[i] = new int[dim];
-    }
-    
-    rellenarMatAdj(matrizAdy, entrada, dim);
-
-    int **memo = new int*[(1 << dim)];
-    for (auto i = 0; i < (1 << dim); i++)
-    {
-        memo[i] = new int[dim];
-    }   
-//    cout<<"bruh"<<endl;
-    for (auto i = 0; i < (1<< dim); i++)
-    {
-        for (auto j = 0; j < dim; j++)
-        {
-            memo[i][j] = -1;
-//            cout<<memo[i][j]<<" ";
-        }
-//        cout<<endl;
-    }
-
-    for (int i: listaCiudades)
-    {
-        cout << i <<" "<<endl;
-    }
-
-    for (int i = 0; i < dim; i++)
-    {
-        for (int j = 0; j < dim; j++)
-        {
-            cout << matrizAdy[i][j]<<" ";
-        }
-        cout << endl;
-    }
-    int caminoCosto = 0;
-    tsp(matrizAdy, listaCiudades, caminoCiudades, caminoCosto, memo);
-
-
-    for (auto i = 0; i <  (1<<dim); i++)
-    {
-        for (auto j = 0; j < dim; j++)
-        {
-            cout<<memo[i][j]<<" ";
-        }
-        cout<<endl;
-    }
-
-
-  /*  //  Imprimir resultado del Greedy
-    cout <<"CAMINO: "<< camino << endl
-            <<"INICIO_CAMINO_CERCANIA"<< endl;
-
-    for (int i = 0; i < (int)tour.size(); i++)
-    {
-        cout <<tour[i].indice<<"\t" <<tour[i].x<<"\t"<<tour[i].y<<endl;
-    }
-*/
-
-for (int i = 0; i < dim; i++)
-{
-    delete [] memo[i];
-    delete [] matrizAdy[i];
-}
-
-  delete [] memo;
-  delete [] matrizAdy;
-
-  return 0;
+  for (int i = 0; i < (int) n.size(); i++) {
+    std::cout << n[i] + 1<< ' ';
+  }
 }
