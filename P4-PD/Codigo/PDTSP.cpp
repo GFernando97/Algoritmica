@@ -2,6 +2,7 @@
 #include <vector>
 #include <climits>
 #include <map>
+#include <ctime>
 #include <sstream>
 #include <math.h>
 #include <fstream>
@@ -118,6 +119,7 @@ class TSP {
     }
 };
 
+
 int main(int argc, char ** argv) {
 
   // Lectura de los parametros de entrada
@@ -167,11 +169,20 @@ int main(int argc, char ** argv) {
     n[i] = n[i] - 1;
   }
 
+
+  clock_t t_inicial = clock();
+
   cout << tsp.g(0, n) << endl;
+
+  clock_t t_final = clock();
 
   n = tsp.camino(0, n);
 
+
+  cout << "Tiempo Ejecucion: " << ((double)(t_final - t_inicial)) / CLOCKS_PER_SEC << endl;
+
   for (int i = 0; i < (int) n.size(); i++) {
-    std::cout << n[i] + 1<< ' ';
+    std::cout << n[i] + 1 << " " << x[i] << " " << y[i]<< endl;
   }
+
 }
