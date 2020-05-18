@@ -14,9 +14,10 @@ class TSP {
 
   private:
 
+    // Matriz de distancias
     vector< vector<int> > distancias;
+    // Map con los resultados de los g calculados
     map<string, int> gs;
-    vector<int> solucion;
 
   public:
 
@@ -74,7 +75,7 @@ class TSP {
               } // end if
             } // end for
 
-            // Guardamso el valor de g(nodo, s)
+            // Guardamos el valor de g(nodo, s)
             gs[ss_aux] = distancia_min;
         } // end else
       }
@@ -93,16 +94,19 @@ class TSP {
       sin_solucion = s;
       solucion.push_back(nodo);
 
+      // Mientras que no esté completo el camino
       while (solucion.size() <= s.size()) {
 
         distancia_min = INT_MAX;
         indice_nodo_min = -1;
 
+        // Para cada nodo sin estar en el camino
         for (int i = 0; i < (int) sin_solucion.size(); i++) {
 
           s_aux = sin_solucion;
           s_aux.erase(s_aux.begin()+i);
 
+          // Calculamos la distancia desde el nodo i sin estar en el camino
           distancia_min_aux = distancias[solucion.back()][sin_solucion[i]] + g(sin_solucion[i], s_aux);
 
           if (distancia_min_aux < distancia_min) {
@@ -111,6 +115,7 @@ class TSP {
           }
         }
 
+        // Añadimos al camino el nodo con la distancia más pequeña
         solucion.push_back(sin_solucion[indice_nodo_min]);
         sin_solucion.erase(sin_solucion.begin()+indice_nodo_min);
       }
@@ -172,12 +177,13 @@ int main(int argc, char ** argv) {
 
   clock_t t_inicial = clock();
 
+  // Cálculo de la distanca mínima
   cout << tsp.g(0, n) << endl;
 
-  clock_t t_final = clock();
-
+  // Cálculo del camino
   n = tsp.camino(0, n);
 
+  clock_t t_final = clock();
 
   cout << "Tiempo Ejecucion: " << ((double)(t_final - t_inicial)) / CLOCKS_PER_SEC << endl;
 
