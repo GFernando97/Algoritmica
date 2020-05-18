@@ -40,6 +40,7 @@ class TSP {
       }
     }
 
+    // Calculo de la distancia del camino minimo desde 'nodo' al nodo 1 a traves de 's'
     int g(int nodo, vector<int> s) {
 
       int distancia_min, distancia_min_aux;
@@ -86,6 +87,7 @@ class TSP {
       return distancia_min;
     }
 
+    // Calculo del camino (nodos) para el camino minimo desde 'nodo' hasta el nodo 1 a traves de 's'
     vector<int> camino(int nodo, vector<int> s) {
 
       int distancia_min, distancia_min_aux, indice_nodo_min;
