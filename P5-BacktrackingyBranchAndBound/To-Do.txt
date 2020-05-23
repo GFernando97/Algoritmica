@@ -1,0 +1,12 @@
+---Ejercicio Asignado 2.4 - ITV (Chema)
+	-Generar Datos
+	-Problema con Backtracking
+	-Efificiencia
+---TSP
+-Branch and Bound
+	-Determinar cota inferior
+	-Devolver costo, recorrido, nodos expandidos,
+	tamaño maximo cola prioridad de nodos vivos, nro de podas,
+	tiempo empleado.
+-Backtracking con condicion de acotacion.
+-Estudio experimental(?) entre B&B y Backtracking.
