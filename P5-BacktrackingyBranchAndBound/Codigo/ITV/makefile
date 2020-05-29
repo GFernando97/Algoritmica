@@ -1,17 +1,24 @@
 
 EXE = generador itv
-ESC = esc16.txt esc22.txt
+DAT = 2l.dat 3l.dat
+GRAF = graf2l.png graf3l.png grafall.png
 
 rutaESC = ./Escenarios
+rutaDAT = ./Datos
+rutaGRAF = ./Graficas
 
-min = 1
-max = 20
+ini = 2
+fin = 22
+paso = 2
 
-all : $(EXE) $(ESC)
+
+all : $(EXE) $(DAT) esc $(GRAF)
 
 exe : $(EXE)
 
-esc : $(ESC)
+dat : $(DAT)
+
+graf : $(GRAF)
 
 generador : generador.cpp
 	g++ -Wall -std=c++17 -o $@ $<
@@ -19,11 +26,23 @@ generador : generador.cpp
 itv : itv.cpp
 	g++ -Wall -std=c++17 -o $@ $<
 
-esc16.txt : generador
-	./$< 16 $(min) $(max) > $(rutaESC)/$@
+esc : generar_escenarios.sh generador
+	bash generar_escenarios.sh $(ini) $(fin) $(paso)
 
-esc22.txt : generador
-	./$< 22 $(min) $(max) > $(rutaESC)/$@
+2l.dat : esc itv
+	bash generar_datos.sh $(ini) $(fin) $(paso) 2
+
+3l.dat : esc itv
+	bash generar_datos.sh $(ini) $(fin) $(paso) 3
+
+graf2l.png : 2l.dat
+	gnuplot ./grafica2l.gpi
+
+graf3l.png : 3l.dat
+	gnuplot ./grafica3l.gpi
+
+grafall.png : 2l.dat 3l.dat
+	gnuplot ./graficaAll.gpi
 
 clean:
 	rm $(EXE)
@@ -31,3 +50,12 @@ clean:
 
 cleanexe:
 	rm $(EXE)
+
+cleanesc:
+	rm $(rutaESC)/*
+
+cleandat:
+	rm $(rutaDAT)/*
+
+cleangraf:
+	rm $(rutaGRAF)/*
