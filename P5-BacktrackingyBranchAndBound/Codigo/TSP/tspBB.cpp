@@ -39,11 +39,9 @@ public:
     return camino_sol;
   }
 
-  TSP (vector<float> x, vector<float> y) {
+  TSP (vector<float> x, vector<float> y, vector<int> ciudades) {
 
     int dimension;
-
-    distancia_sol = INT_MAX;
 
     camino_sol.clear();
 
@@ -57,6 +55,10 @@ public:
         distancias[i].push_back(calcular_distancia(x[i], x[j], y[i], y[j]));
       }
     }
+
+    distancia_sol = greedy(ciudades);
+
+    cout<<"Distancia Inicial:"<<distancia_sol<<endl;
 
     nodos_expandidos = 0;
     n_podas = 0;
@@ -107,6 +109,59 @@ public:
 
     return 0;
   }
+
+
+int greedy(vector<int> ciudades)
+  {
+  //  Declaración de variables auxiliares para Greedy.
+      int dim = ciudades.size(),
+          distanciaMin,
+          distanciaAct,
+          indiceCiudad,
+          camino = 0;
+
+  //  Declaración de los nodos (ciudades) auxiliares para Greedy
+      int nodoIni = ciudades[0],
+          nodoVec, 
+          nodoFin = nodoIni;
+
+  //  El vector Ciudades es la lista de Candidatos, se elimina el vector de inicio.
+      ciudades.erase(ciudades.begin());
+
+  //  Mientras queden Candidatos
+      while (!ciudades.empty())
+      {
+  //      Tomando la ciudad actualmente elegida, se itera en el vector de Candidatos buscando otra ciudad que tiene la distancia más corta hacia ella.
+  //      Si existen dos o más con la misma distancia, se toma la primera.
+          distanciaMin = INT_MAX;
+          for (int i = 0; i < (int)ciudades.size(); i++)
+          {
+              distanciaAct = distancias[nodoIni][ciudades[i]];
+
+              if(distanciaMin > distanciaAct && nodoIni != i)
+              {
+  //              Se actualiza la distancia minima hasta obtener la mas pequeña de todas y también el nodo asociado a ella.
+                  distanciaMin = distanciaAct;
+                  nodoVec = ciudades[i];
+                  indiceCiudad = i;
+              }
+          }
+  //      Se suma la distancia mínima en al camino
+          camino += distanciaMin;
+
+  //      Se añade la ciudad más cercana a la solución y ahora se busca otra ciudad cercana a esta última.
+          nodoIni = nodoVec;
+
+  //      Se elimina la ciudad más cercana de los candidatos, para evitar pasar por el mismo sitio dos veces.
+          ciudades.erase(ciudades.begin() + indiceCiudad);
+      }
+
+  //  Calcular el camino de la ultima ciudad elegida y el comienzo, lo que finaliza el recorrido y se almacena también en la solución.
+      camino += distancias[nodoIni][nodoFin];
+
+      return camino;
+    }
+
 };
 
 int main(int argc, char const *argv[]) {
@@ -156,7 +211,7 @@ int main(int argc, char const *argv[]) {
   ciudades_sinvisitar.pop_back();
   ciudades_visitadas.push_back(n.back());
 
-  TSP tsp(x, y);
+  TSP tsp(x, y, n);
   tsp.resolver(ciudades_visitadas, ciudades_sinvisitar, 0);
 
   cout << "Nodos expandidos: " << tsp.get_nodos_expandidos() << '\n';
