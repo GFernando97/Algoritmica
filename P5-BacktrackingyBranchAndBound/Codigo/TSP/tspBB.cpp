@@ -18,6 +18,23 @@ private:
   int nodos_expandidos;
   int n_podas;
 
+  vector<int> ordenar_prioridad (int ciudad, vector<int> ciudades_sinvisitar) {
+
+    int aux;
+
+    for (int i = 0; i < (int) ciudades_sinvisitar.size() - 1; i++) {
+      for (int j = i; j < (int) ciudades_sinvisitar.size() - 1; j++) {
+        if (distancias[ciudades_sinvisitar[j]][ciudad] > distancias[ciudades_sinvisitar[j+1]][ciudad]) {
+          aux = ciudades_sinvisitar[j];
+          ciudades_sinvisitar[j] = ciudades_sinvisitar[j+1];
+          ciudades_sinvisitar[j+1] = aux;
+        }
+      }
+    }
+
+    return ciudades_sinvisitar;
+  }
+
 public:
 
   int calcular_distancia(float x1, float x2, float y1, float y2) {
@@ -95,6 +112,9 @@ public:
     // Si todavía quedan ciudades por visitar
     if (!ciudades_sinvisitar.empty()) {
 
+      // Ordenamos la cola segun prioridad
+      ciudades_sinvisitar = ordenar_prioridad(ciudades_visitadas.back(), ciudades_sinvisitar);
+
       aux_ciudades_visitadas = ciudades_visitadas;
 
       // Para cada ciudad que quede por visitar
@@ -148,7 +168,8 @@ public:
 int greedy(vector<int> ciudades)
   {
   //  Declaración de variables auxiliares para Greedy.
-      int distanciaMin,
+      int dim = (int) ciudades.size(),
+          distanciaMin,
           distanciaAct,
           indiceCiudad,
           camino = 0;
@@ -264,10 +285,8 @@ int main(int argc, char const *argv[]) {
   cout << "Numero de podas: " << tsp.get_n_podas() << '\n';
   cout << "Distancia solucion: " << tsp.get_distancia_sol() << '\n';
   ciudades_visitadas = tsp.get_camino_sol();
-  
-  ciudades_visitadas.push_back(ciudades_visitadas.front());
   for (int i = 0; i < (int) ciudades_visitadas.size(); i++) {
-    cout << ciudades_visitadas[i]+1 <<'\t'<<x[ciudades_visitadas[i]] <<'\t'<<y[ciudades_visitadas[i]]<<endl;
+    cout << ciudades_visitadas[i]+1 << ' ';
   }
 
   return 0;
