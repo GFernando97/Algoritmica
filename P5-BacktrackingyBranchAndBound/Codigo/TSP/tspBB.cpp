@@ -80,6 +80,13 @@ public:
   // ciudades_sinvisitar: ciudades para anadir a la solucion
   // distancia_visitadas: distancia de camino solucion
   // distancia_estimada_opt: distancia estiamada optimista de las ciudades para anadir a la solucion
+  // Estado inicial ejemplo con 5 nodos:
+  // ciudades_visitadas: {5}
+  // ciudades_sinvisitar: {1,2,3,4}
+  // distancia_visitadas: 0
+  // distancia_estimada_opt: opt(1) + opt(2) + opt(3) + opt(4)
+  //                         opt(x): distancia desde x a y, siendo y la ciudad más cercana a x
+  //                                 y pertenece al conjunto de todas las ciudades
   int resolver(vector<int> ciudades_visitadas, vector<int> ciudades_sinvisitar, int distancia_visitadas, int distancia_estimada_opt) {
 
     vector<int> aux_ciudades_visitadas, aux_ciudades_sinvisitar;
@@ -261,7 +268,6 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < (int) ciudades_visitadas.size(); i++) {
     cout << ciudades_visitadas[i]+1 << ' ';
   }
-  cout << endl;
 
   return 0;
 }
