@@ -34,6 +34,7 @@ private:
   vector<int> camino_sol;
   int nodos_expandidos;
   int n_podas;
+  int tam_max_cola = 0; 
 
 public:
 
@@ -79,6 +80,10 @@ public:
       nuevaDist.second = distancias[actual][nodos_sinvisitar[i]];
       ColaNodos.push(nuevaDist);
     }
+
+    if(ColaNodos.size() > tam_max_cola)
+      tam_max_cola = ColaNodos.size();
+    
 
     priority_queue <pair<int,int>, vector<pair<int,int>>, Compare> g = ColaNodos; 
     while (!g.empty()) { 
@@ -140,7 +145,12 @@ public:
         distancia_total += distancia_visitadas + distancias[ciudades_visitadas.back()][aux_ciudades_visitadas.back()];
         aux_distancia_estimada_opt = distancia_estimada_opt - menor_arista(aux_ciudades_visitadas.back());
 
-        if (distancia_total + aux_distancia_estimada_opt < distancia_sol) {
+        cout << "Nueva Ciudad " << aux_ciudades_visitadas.back() << endl;
+
+        if (distancia_total  + aux_distancia_estimada_opt < distancia_sol) {
+
+          cout << "Dist Total vs Dist Sol " << distancia_total +aux_distancia_estimada_opt<< " ------- " << distancia_sol << endl;
+
           nodos_expandidos++;
           resolver(aux_ciudades_visitadas, aux_ciudades_sinvisitar, distancia_total, aux_distancia_estimada_opt);
         }
@@ -276,6 +286,10 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < (int) ciudades_sinvisitar.size(); i++) {
     distancia_estimada_opt += tsp.menor_arista(ciudades_sinvisitar[i]);
   }
+
+
+
+  cout << distancia_estimada_opt << endl;
 
   clock_t t_inicial = clock();
 

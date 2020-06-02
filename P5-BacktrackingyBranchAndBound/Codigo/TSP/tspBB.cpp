@@ -4,6 +4,7 @@
 #include <fstream>
 #include <math.h>
 #include <sstream>
+#include <ctime>
 
 using namespace std;
 
@@ -21,6 +22,17 @@ public:
 
   int calcular_distancia(float x1, float x2, float y1, float y2) {
     return (int) round((sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2))));
+  }
+
+  int menor_arista(int nodo) {
+    int arista_menor;
+    arista_menor = INT_MAX;
+    for (int i = 0; i < (int) distancias[nodo].size(); i++) {
+      if (arista_menor > distancias[nodo][i]) {
+        arista_menor = distancias[nodo][i];
+      }
+    }
+    return arista_menor;
   }
 
   int get_nodos_expandidos() {
@@ -64,10 +76,10 @@ public:
     n_podas = 0;
   }
 
-  int resolver(vector<int> ciudades_visitadas, vector<int> ciudades_sinvisitar, int distancia_visitadas) {
+  int resolver(vector<int> ciudades_visitadas, vector<int> ciudades_sinvisitar, int distancia_visitadas, int distancia_estimada_opt) {
 
     vector<int> aux_ciudades_visitadas, aux_ciudades_sinvisitar;
-    int distancia_total;
+    int distancia_total, aux_distancia_estimada_opt;
 
     if (!ciudades_sinvisitar.empty()) {
 
@@ -81,11 +93,16 @@ public:
         aux_ciudades_visitadas.push_back(ciudades_sinvisitar[i]);
         aux_ciudades_sinvisitar = ciudades_sinvisitar;
         aux_ciudades_sinvisitar.erase(aux_ciudades_sinvisitar.begin()+i);
-        distancia_total += distancia_visitadas + distancias[aux_ciudades_visitadas[(int) aux_ciudades_visitadas.size()-1]][aux_ciudades_visitadas.back()];
+        distancia_total += distancia_visitadas + distancias[ciudades_visitadas.back()][aux_ciudades_visitadas.back()];
+        aux_distancia_estimada_opt = distancia_estimada_opt - menor_arista(aux_ciudades_visitadas.back());
 
-        if (distancia_total < distancia_sol) {
+        cout << "Nueva Ciudad " << aux_ciudades_visitadas.back() << endl;
+
+        if (distancia_total + aux_distancia_estimada_opt < distancia_sol) {
+          cout << "Dist Total vs Dist Sol " << distancia_total+aux_distancia_estimada_opt << " ------- " << distancia_sol << endl;
+
           nodos_expandidos++;
-          resolver(aux_ciudades_visitadas, aux_ciudades_sinvisitar, distancia_total);
+          resolver(aux_ciudades_visitadas, aux_ciudades_sinvisitar, distancia_total, aux_distancia_estimada_opt);
         }
         else {
           n_podas++;
@@ -114,7 +131,7 @@ public:
 int greedy(vector<int> ciudades)
   {
   //  Declaración de variables auxiliares para Greedy.
-      int dim = ciudades.size(),
+      int dim = (int) ciudades.size(),
           distanciaMin,
           distanciaAct,
           indiceCiudad,
@@ -122,7 +139,7 @@ int greedy(vector<int> ciudades)
 
   //  Declaración de los nodos (ciudades) auxiliares para Greedy
       int nodoIni = ciudades[0],
-          nodoVec, 
+          nodoVec,
           nodoFin = nodoIni;
 
   //  El vector Ciudades es la lista de Candidatos, se elimina el vector de inicio.
@@ -134,7 +151,7 @@ int greedy(vector<int> ciudades)
   //      Tomando la ciudad actualmente elegida, se itera en el vector de Candidatos buscando otra ciudad que tiene la distancia más corta hacia ella.
   //      Si existen dos o más con la misma distancia, se toma la primera.
           distanciaMin = INT_MAX;
-          for (int i = 0; i < (int)ciudades.size(); i++)
+          for (int i = 0; i < (int) ciudades.size(); i++)
           {
               distanciaAct = distancias[nodoIni][ciudades[i]];
 
@@ -207,13 +224,26 @@ int main(int argc, char const *argv[]) {
 
   infile.close();
 
+  srandom(time(0));
+
   ciudades_sinvisitar = n;
   ciudades_sinvisitar.pop_back();
   ciudades_visitadas.push_back(n.back());
+  int distancia_estimada_opt;
+  distancia_estimada_opt = 0;
 
   TSP tsp(x, y, n);
-  tsp.resolver(ciudades_visitadas, ciudades_sinvisitar, 0);
+  for (int i = 0; i < (int) ciudades_sinvisitar.size(); i++) {
+    distancia_estimada_opt += tsp.menor_arista(ciudades_sinvisitar[i]);
+  }
 
+  clock_t t_inicial = clock();
+
+  tsp.resolver(ciudades_visitadas, ciudades_sinvisitar, 0, distancia_estimada_opt);
+
+  clock_t t_final = clock();
+
+  cout << "Tiempo Ejecucion: " << ((double)(t_final - t_inicial)) / CLOCKS_PER_SEC << endl;
   cout << "Nodos expandidos: " << tsp.get_nodos_expandidos() << '\n';
   cout << "Numero de podas: " << tsp.get_n_podas() << '\n';
   cout << "Distancia solucion: " << tsp.get_distancia_sol() << '\n';
