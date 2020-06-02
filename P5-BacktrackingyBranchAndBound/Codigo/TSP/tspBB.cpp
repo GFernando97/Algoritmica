@@ -261,6 +261,7 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < (int) ciudades_visitadas.size(); i++) {
     cout << ciudades_visitadas[i]+1 << ' ';
   }
+  cout << endl;
 
   return 0;
 }
