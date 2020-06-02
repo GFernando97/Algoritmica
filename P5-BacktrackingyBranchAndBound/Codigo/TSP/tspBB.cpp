@@ -76,15 +76,21 @@ public:
     n_podas = 0;
   }
 
+  // ciudades_visitadas: camino solucion
+  // ciudades_sinvisitar: ciudades para anadir a la solucion
+  // distancia_visitadas: distancia de camino solucion
+  // distancia_estimada_opt: distancia estiamada optimista de las ciudades para anadir a la solucion
   int resolver(vector<int> ciudades_visitadas, vector<int> ciudades_sinvisitar, int distancia_visitadas, int distancia_estimada_opt) {
 
     vector<int> aux_ciudades_visitadas, aux_ciudades_sinvisitar;
     int distancia_total, aux_distancia_estimada_opt;
 
+    // Si todavía quedan ciudades por visitar
     if (!ciudades_sinvisitar.empty()) {
 
       aux_ciudades_visitadas = ciudades_visitadas;
 
+      // Para cada ciudad que quede por visitar
       for (int i = 0; i < (int) ciudades_sinvisitar.size(); i++) {
 
         distancia_total = 0;
@@ -93,31 +99,35 @@ public:
         aux_ciudades_visitadas.push_back(ciudades_sinvisitar[i]);
         aux_ciudades_sinvisitar = ciudades_sinvisitar;
         aux_ciudades_sinvisitar.erase(aux_ciudades_sinvisitar.begin()+i);
+        // Calculamos la distancia real que tendremos en el camino al añadir la ciudad i de las ciudades sin visitar
         distancia_total += distancia_visitadas + distancias[ciudades_visitadas.back()][aux_ciudades_visitadas.back()];
+        // Calculamos la distancia estimada mas optimista del resto de ciudades
         aux_distancia_estimada_opt = distancia_estimada_opt - menor_arista(aux_ciudades_visitadas.back());
 
-        cout << "Nueva Ciudad " << aux_ciudades_visitadas.back() << endl;
-
+        // Si la distancia real mas la distancia estimada son menores que la solucion real que tenemos resolvemos
         if (distancia_total + aux_distancia_estimada_opt < distancia_sol) {
-          cout << "Dist Total vs Dist Sol " << distancia_total+aux_distancia_estimada_opt << " ------- " << distancia_sol << endl;
-
           nodos_expandidos++;
           resolver(aux_ciudades_visitadas, aux_ciudades_sinvisitar, distancia_total, aux_distancia_estimada_opt);
         }
+        // Si no podamos la rama
         else {
           n_podas++;
         }
       }
     }
+    // No quedan ciudades por visitar, estamos en un nodo hoja
     else {
 
       distancia_total = 0;
 
+      // Calculamos la distancia total del camino
       for (int i = 0; i < (int) ciudades_visitadas.size()-1; i++) {
         distancia_total += distancias[ciudades_visitadas[i]][ciudades_visitadas[i+1]];
       }
+      // Unimos con el principio
       distancia_total += distancias[ciudades_visitadas.front()][ciudades_visitadas.back()];
 
+      // Si la distancia calculada es menor que la mejor solucion obtenida esta pasa a ser la mejor solucion obtenida
       if (distancia_total < distancia_sol) {
         distancia_sol = distancia_total;
         camino_sol = ciudades_visitadas;
