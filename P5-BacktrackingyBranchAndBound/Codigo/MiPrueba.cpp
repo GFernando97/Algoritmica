@@ -29,7 +29,7 @@ class TSP {
 private:
 
   vector< vector<int> > distancias;
-  priority_queue<pair<int,int>, vector<pair<int,int>>, Compare>ColaNodos;
+ // priority_queue<pair<int,int>, vector<pair<int,int>>, Compare>ColaNodos;
   int distancia_sol;
   vector<int> camino_sol;
   int nodos_expandidos;
@@ -70,22 +70,22 @@ public:
   }
 
 
-  void rellenaCola(int &actual, vector<int> &nodos_sinvisitar){
-    ColaNodos = priority_queue<pair<int,int>, vector<pair<int,int>>, Compare> ();
+  void rellenaCola(int &actual, vector<int> &nodos_sinvisitar, priority_queue<pair<int,int>, vector<pair<int,int>>, Compare>&Cola){
+    Cola = priority_queue<pair<int,int>, vector<pair<int,int>>, Compare> ();
     pair<int,int> nuevaDist;
     cout << "num nodos sin visitar: " << nodos_sinvisitar.size() << endl;
 
     for(int i = 0; i < (int) nodos_sinvisitar.size(); i++){
       nuevaDist.first = i;
       nuevaDist.second = distancias[actual][nodos_sinvisitar[i]];
-      ColaNodos.push(nuevaDist);
+      Cola.push(nuevaDist);
     }
 
-    if(ColaNodos.size() > tam_max_cola)
-      tam_max_cola = ColaNodos.size();
+    if(Cola.size() > tam_max_cola)
+      tam_max_cola = Cola.size();
     
 
-    priority_queue <pair<int,int>, vector<pair<int,int>>, Compare> g = ColaNodos; 
+   /* priority_queue <pair<int,int>, vector<pair<int,int>>, Compare> g = ColaNodos; 
     while (!g.empty()) { 
       pair<int,int> NAux;
       NAux.first = g.top().first;
@@ -93,7 +93,9 @@ public:
       g.pop(); 
       cout << NAux.first << "----" << NAux.second << endl; 
     } 
-    cout << endl; 
+    cout << endl; */
+
+    
   }
 
 
@@ -122,7 +124,7 @@ public:
     n_podas = 0;
   }
 
-  int resolver(vector<int> ciudades_visitadas, vector<int> ciudades_sinvisitar, int distancia_visitadas, int distancia_estimada_opt) {
+  int resolver(vector<int> ciudades_visitadas, vector<int> ciudades_sinvisitar, int distancia_visitadas, int distancia_estimada_opt, priority_queue<pair<int,int>, vector<pair<int,int>>, Compare>&Cola) {
 
     vector<int> aux_ciudades_visitadas, aux_ciudades_sinvisitar;
     int distancia_total, aux_distancia_estimada_opt;
@@ -135,8 +137,8 @@ public:
 
         distancia_total = 0;
 
-        rellenaCola(ciudades_visitadas.back(), ciudades_sinvisitar);
-        int indiceProm = ColaNodos.top().first;
+        int indiceProm = Cola.top().first;
+        Cola.pop();
 
         aux_ciudades_visitadas = ciudades_visitadas;
         aux_ciudades_visitadas.push_back(ciudades_sinvisitar[indiceProm]);
@@ -149,10 +151,12 @@ public:
 
         if (distancia_total  + aux_distancia_estimada_opt < distancia_sol) {
 
+          priority_queue<pair<int,int>, vector<pair<int,int>>, Compare> aux;
+          rellenaCola(aux_ciudades_visitadas.back(), aux_ciudades_sinvisitar, aux);
           cout << "Dist Total vs Dist Sol " << distancia_total +aux_distancia_estimada_opt<< " ------- " << distancia_sol << endl;
-
+          //ColaNodos.pop();
           nodos_expandidos++;
-          resolver(aux_ciudades_visitadas, aux_ciudades_sinvisitar, distancia_total, aux_distancia_estimada_opt);
+          resolver(aux_ciudades_visitadas, aux_ciudades_sinvisitar, distancia_total, aux_distancia_estimada_opt, aux);
         }
         else {
           n_podas++;
@@ -279,6 +283,7 @@ int main(int argc, char const *argv[]) {
   ciudades_sinvisitar = n;
   ciudades_sinvisitar.pop_back();
   ciudades_visitadas.push_back(n.back());
+  priority_queue<pair<int,int>, vector<pair<int,int>>, Compare> NuevaCola;
   int distancia_estimada_opt;
   distancia_estimada_opt = 0;
 
@@ -287,13 +292,15 @@ int main(int argc, char const *argv[]) {
     distancia_estimada_opt += tsp.menor_arista(ciudades_sinvisitar[i]);
   }
 
+  tsp.rellenaCola(ciudades_visitadas.back(), ciudades_sinvisitar, NuevaCola);
+
 
 
   cout << distancia_estimada_opt << endl;
 
   clock_t t_inicial = clock();
 
-  tsp.resolver(ciudades_visitadas, ciudades_sinvisitar, 0, distancia_estimada_opt);
+  tsp.resolver(ciudades_visitadas, ciudades_sinvisitar, 0, distancia_estimada_opt, NuevaCola);
 
   clock_t t_final = clock();
 
