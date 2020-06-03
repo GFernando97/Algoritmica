@@ -165,11 +165,10 @@ public:
   }
 
 
-int greedy(vector<int> ciudades)
+  int greedy(vector<int> ciudades)
   {
   //  Declaración de variables auxiliares para Greedy.
-      int dim = (int) ciudades.size(),
-          distanciaMin,
+      int distanciaMin,
           distanciaAct,
           indiceCiudad,
           camino = 0;
@@ -286,7 +285,7 @@ int main(int argc, char const *argv[]) {
   cout << "Distancia solucion: " << tsp.get_distancia_sol() << '\n';
   ciudades_visitadas = tsp.get_camino_sol();
   for (int i = 0; i < (int) ciudades_visitadas.size(); i++) {
-    cout << ciudades_visitadas[i]+1 << ' ';
+    cout << ciudades_visitadas[i]+1 <<"\t"<<x[ciudades_visitadas[i]]<<"\t"<<y[ciudades_visitadas[i]]<<endl;
   }
 
   return 0;

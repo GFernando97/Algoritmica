@@ -73,9 +73,9 @@ public:
 
       for (int i = 0; i < (int) ciudades_visitadas.size()-1; i++) {
         distancia_total += distancias[ciudades_visitadas[i]][ciudades_visitadas[i+1]];
-        std::cout << ciudades_visitadas[i] + 1 << ' ';
+        //std::cout << ciudades_visitadas[i] + 1 << ' ';
       }
-      std::cout << ciudades_visitadas.back() + 1 << '\n';
+      //std::cout << ciudades_visitadas.back() + 1 << '\n';
       distancia_total += distancias[ciudades_visitadas.front()][ciudades_visitadas.back()];
 
       if (distancia_total < distancia_sol) {
@@ -127,7 +127,7 @@ int main(int argc, char const *argv[]) {
     n.push_back(var1-1);
     x.push_back(var2);
     y.push_back(var3);
-    std::cout << var1 - 1 << '\n';
+   // std::cout << var1 - 1 << '\n';
   }
 
   infile.close();
@@ -137,12 +137,15 @@ int main(int argc, char const *argv[]) {
   ciudades_visitadas.push_back(n.back());
 
   TSP tsp(x, y);
+  clock_t t_inicial = clock();
   tsp.resolver(ciudades_visitadas, ciudades_sinvisitar);
+  clock_t t_final = clock();
 
+  cout << "Tiempo: " << ((double)(t_final - t_inicial)) / CLOCKS_PER_SEC << endl;
   cout << "Distancia solucion: " << tsp.get_distancia_sol() << '\n';
   ciudades_visitadas = tsp.get_camino_sol();
   for (int i = 0; i < (int) ciudades_visitadas.size(); i++) {
-    cout << ciudades_visitadas[i]+1 << ' ';
+    cout << ciudades_visitadas[i]+1 <<"\t"<<x[ciudades_visitadas[i]]<<"\t"<<y[ciudades_visitadas[i]]<<endl;
   }
 
   return 0;
