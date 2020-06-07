@@ -8,6 +8,7 @@ rutaDAT = ./Datos
 rutaGRAF = ./Graficas
 
 ini = 2
+fin2=30
 fin = 22
 paso = 2
 
@@ -27,10 +28,10 @@ itv : itv.cpp
 	g++ -Wall -std=c++17 -o $@ $<
 
 esc : generar_escenarios.sh generador
-	bash generar_escenarios.sh $(ini) $(fin) $(paso)
+	bash generar_escenarios.sh $(ini) $(fin2) $(paso)
 
 2l.dat : esc itv
-	bash generar_datos.sh $(ini) $(fin) $(paso) 2
+	bash generar_datos.sh $(ini) $(fin2) $(paso) 2
 
 3l.dat : esc itv
 	bash generar_datos.sh $(ini) $(fin) $(paso) 3
