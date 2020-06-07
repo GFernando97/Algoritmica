@@ -147,6 +147,6 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < (int) ciudades_visitadas.size(); i++) {
     cout << ciudades_visitadas[i]+1 <<"\t"<<x[ciudades_visitadas[i]]<<"\t"<<y[ciudades_visitadas[i]]<<endl;
   }
-
+  cout << ciudades_visitadas[0]+1 <<"\t"<<x[ciudades_visitadas[0]]<<"\t"<<y[ciudades_visitadas[0]]<<endl;
   return 0;
 }
